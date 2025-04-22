@@ -1,10 +1,18 @@
-import React from 'react';
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log(API_BASE_URL);
 
-function App() {
-  return <h1>Hello, Vite + React + TypeScript!</h1>;
+export default function App() {
+  return (
+    <header>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <SignInButton />
+      </SignedIn>
+    </header>
+  )
 }
 
-export default App;
