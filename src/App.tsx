@@ -10,7 +10,7 @@ export default function App() {
         <SignInButton />
       </SignedOut>
       <SignedIn>
-        <SignInButton />
+        <UserButton />
       </SignedIn>
     </header>
   )
