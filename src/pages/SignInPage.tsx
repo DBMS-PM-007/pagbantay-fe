@@ -1,16 +1,17 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { SignInButton, SignUpButton } from "@clerk/clerk-react";
+import { useState } from "react"
 
 export default function SignInPage() {
+  const [isSignUp, setIsSignUp] = useState<boolean>(true)
+
+  const toggleButton = () => {
+    setIsSignUp(!isSignUp)
+  }
+
   return (
     <>
-      <SignedOut>
-        <h1>Signed Out</h1>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <h1>Signed In</h1>
-        <UserButton />
-      </SignedIn>
+      {isSignUp ? <SignUpButton /> : <SignInButton />}
+      <button onClick={toggleButton}>Toggle Here</button>
     </>
   )
 }
