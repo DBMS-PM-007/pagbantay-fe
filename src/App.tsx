@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import Home from "./pages/Home";
 import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminAssignment from "./pages/admin/AssignVolunteers";
 import AdminEvents from "./pages/admin/Events";
@@ -38,6 +39,7 @@ export default function App() {
         {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
       </Routes>
     </BrowserRouter>
   );
