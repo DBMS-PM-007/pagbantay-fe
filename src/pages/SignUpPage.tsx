@@ -1,8 +1,11 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
+import InputField from "../components/InputField";
 
 export default function SignUpPage() {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -51,28 +54,42 @@ export default function SignUpPage() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className="flex flex-col justify-center">
       {!submitted ? (
-        <form onSubmit={handleSubmit}>
-          <input
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
+          <InputField
+            type="text"
+            placeholder="Full name"
+            value={name}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
+          />
+          <InputField
+            type="text"
+            placeholder="Phone Number"
+            value={number}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setNumber(e.target.value)
+            }
+          />
+          <InputField
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
-            required
           />
-          <input
+          <InputField
             type="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
-            required
           />
-          <button type="submit">Sign Up</button>
+          <button type="submit" className="mt-4 text-md text-white hover:cursor-pointer font-bold bg-[maroon] border border-black p-2 rounded-lg">CREATE ACCOUNT</button>
         </form>
       ) : (
         <div>Signed up and session is active!</div>

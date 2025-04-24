@@ -1,5 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignIn } from "@clerk/clerk-react";
+import InputField from "../components/InputField";
 
 export default function SignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -39,31 +40,29 @@ export default function SignInPage() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className="flex flex-col justify-center">
       {!submitted ? (
-        <form onSubmit={handleSubmit}>
-          <input
+        <form onSubmit={handleSubmit} className="flex flex-col justify-center gap-2">
+          <InputField
             type="email"
-            placeholder="Enter your email"
+            placeholder="Email"
             value={email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setEmail(e.target.value)
             }
-            required
           />
-          <input
+          <InputField
             type="password"
-            placeholder="Enter your password"
+            placeholder="Password"
             value={password}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
-            required
           />
-          <button type="submit">Sign In</button>
+          <button type="submit" className="mt-4 text-md text-black hover:cursor-pointer font-bold bg-white border border-black p-2 rounded-lg">SIGN IN</button>
         </form>
       ) : (
-        <div>Signed in and session is active!</div>
+        <div>Signed up and session is active!</div>
       )}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
