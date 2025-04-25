@@ -5,6 +5,6 @@ export default function RequireAuth() {
   const { isSignedIn, isLoaded } = useAuth();
   if (!isLoaded) return null;
 
-  return isSignedIn ? <Outlet /> : <Navigate to="/sign-in" />;
+  return isSignedIn ? <Outlet /> : <Navigate to="/" />;
 }
 
