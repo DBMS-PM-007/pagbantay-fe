@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserButton } from "@clerk/clerk-react";
 import RequireAuth from "./components/RequireAuth";
 import Home from "./pages/Home";
 import SignInPage from "./pages/SignInPage";
@@ -21,7 +22,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<RequireAuth />}>
+        <Route element={<><RequireAuth /> <UserButton /></>}>
           {/* Admin routes */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/assign-volunteers" element={<AdminAssignment />} />
