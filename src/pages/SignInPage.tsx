@@ -1,6 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignIn } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Header from "../components/Header";
 import PagbantayLogo from "../assets/pagbantay_logo.png";
@@ -67,7 +67,9 @@ export default function SignInPage() {
                 setPassword(e.target.value)
               }
             />
-            <button type="submit" className="mt-4 text-md text-black hover:cursor-pointer font-bold bg-white border border-black p-2 rounded-lg">SIGN IN</button>
+            <button type="submit" className="w-full text-md text-black hover:cursor-pointer font-bold bg-white border border-black p-2 rounded-lg">
+              SIGN IN
+            </button>
           </form>
           <a href="/" className="text-[grey] text-xs">
             Forgot password?
@@ -87,7 +89,7 @@ export default function SignInPage() {
           </button>
         </div>
       ) : (
-        <div>Signed up and session is active!</div>
+        <Navigate to="./volunteer" />
       )}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

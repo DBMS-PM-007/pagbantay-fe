@@ -1,6 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Header from "../components/Header";
 
@@ -131,7 +131,7 @@ export default function SignUpPage() {
           </button>
         </div>
       ) : (
-        <div>Signed up and session is active!</div>
+        <Navigate to="./volunteer" />
       )
       }
       {error && <p style={{ color: "red" }}>{error}</p>}
