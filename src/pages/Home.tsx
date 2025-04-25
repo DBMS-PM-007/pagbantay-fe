@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { UserButton } from "@clerk/clerk-react";
 import PagbantayLogo from "../assets/pagbantay_logo.png";
+import LogoContents from "../assets/pagbantay_logo_contents.png";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function Home() {
     <div className="w-screen h-screen flex flex-col items-center">
       <div className="w-[350px] h-full mt-6 text-center justify-center flex flex-col space-y-4 bg-white text-black p-6">
         <img src={PagbantayLogo} />
-        <UserButton />
+        <img src={LogoContents} />
         <button
           onClick={() => navigate("/sign-in")}
           type="submit"
