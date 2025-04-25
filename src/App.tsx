@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
 import RequireAuth from "./components/RequireAuth";
+import LoggedIn from "./components/LoggedIn";
 import Home from "./pages/Home";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -38,9 +39,11 @@ export default function App() {
         </Route>
 
         {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route element={<LoggedIn />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
