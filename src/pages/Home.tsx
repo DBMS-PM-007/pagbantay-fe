@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center">
-      <div className="w-[300px] h-full mt-6 text-center justify-center flex flex-col space-y-4 bg-white text-black p-6">
+      <div className="w-[300px] h-full text-center justify-center flex flex-col space-y-4 bg-white text-black">
         <img src={PagbantayLogo} />
         <img src={LogoContents} />
         <button
