@@ -38,6 +38,8 @@ export default function App() {
 
         {/* Public routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
       </Routes>
     </BrowserRouter>
   );
