@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 type InputFieldProps = {
   type: string;
   placeholder: string;
