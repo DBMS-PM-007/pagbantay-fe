@@ -52,3 +52,9 @@ export default tseslint.config({
   },
 })
 ```
+## Tailwind CSS Setup
+
+### Installation
+Run the following command to install Tailwind and dependencies:
+```sh
+npm install -D tailwindcss postcss autoprefixer @tailwindcss/vite

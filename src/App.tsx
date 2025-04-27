@@ -1,10 +1,47 @@
-import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserButton } from "@clerk/clerk-react";
+import RequireAuth from "./components/RequireAuth";
+import LoggedIn from "./components/LoggedIn";
+import Home from "./pages/Home";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminAssignment from "./pages/admin/AssignVolunteers";
+import AdminEvents from "./pages/admin/Events";
+import CreateEvent from "./pages/admin/CreateEvent";
+import EditEvent from "./pages/admin/EditEvent";
+import VolunteerDashboard from "./pages/volunteer/Dashboard";
+import VolunteerEvents from "./pages/volunteer/Events";
+import VolunteerProfile from "./pages/volunteer/Profile";
+import FirstAidGuide from "./pages/volunteer/FirstAidGuide";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log(API_BASE_URL);
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<><RequireAuth /> <UserButton /></>}>
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/assign-volunteers" element={<AdminAssignment />} />
+          <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/events/create" element={<CreateEvent />} />
+          <Route path="/admin/events/edit" element={<EditEvent />} />
 
-function App() {
-  return <h1>Hello, Vite + React + TypeScript!</h1>;
+          {/* Volunteer routes */}
+          <Route path="/volunteer" element={<VolunteerDashboard />} />
+          <Route path="/volunteer/events" element={<VolunteerEvents />} />
+          <Route path="/volunteer/profile" element={<VolunteerProfile />} />
+          <Route path="/volunteer/first-aid-guide" element={<FirstAidGuide />} />
+        </Route>
+
+        {/* Public routes */}
+        <Route element={<LoggedIn />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App;
