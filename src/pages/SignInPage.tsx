@@ -79,14 +79,6 @@ export default function SignInPage() {
             className="w-full text-md text-white hover:cursor-pointer font-bold bg-[maroon] border border-black p-2 rounded-lg">
             SIGN UP
           </button>
-          <p className="text-[grey] text-xs">
-            Or
-          </p>
-          <button
-            onClick={() => navigate("/")}
-            className="w-full text-md text-black hover:cursor-pointer font-bold bg-white border border-black p-2 rounded-lg">
-            Continue with Google
-          </button>
         </div>
       ) : (
         <Navigate to="./volunteer" />

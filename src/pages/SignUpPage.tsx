@@ -114,14 +114,6 @@ export default function SignUpPage() {
             </button>
           </form>
           <p className="text-[grey] text-xs">
-            Or
-          </p>
-          <button
-            onClick={() => navigate("/")}
-            className="w-full text-md text-black hover:cursor-pointer font-bold bg-white border border-black p-2 rounded-lg">
-            Continue with Google
-          </button>
-          <p className="text-[grey] text-xs">
             Already have an account?
           </p>
           <button
