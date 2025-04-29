@@ -28,7 +28,6 @@ export default function SignUpPage() {
         password: password,
         firstName: firstName,
         lastName: lastName,
-        phoneNumber: contact,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
