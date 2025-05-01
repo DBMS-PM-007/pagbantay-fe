@@ -52,6 +52,15 @@ export default function SignUpPage() {
       console.log("Missing fields:", signUp?.missingFields);
 
       await setActive({ session: sessionId });
+
+      const volunteerData = {
+        full_name: `${firstName} ${lastName}`,
+        email: email,
+        contact_number: contact || null, // allow null fallback
+        committee: null, // default
+        motivation: null, // default
+      };      
+      
       setSubmitted(true);
     } catch (err: any) {
       console.error("Sign-up error:", err);
