@@ -16,6 +16,30 @@ export default function SignUpPage() {
 
   const navigate = useNavigate();
 
+  const registerVolunteer = async (data: any) => {
+    const API_URL = "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com"; 
+  
+    try {
+      const response = await fetch(`${API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to register volunteer");
+      }
+  
+      console.log("Volunteer registration successful");
+    } catch (error) {
+      console.error("Volunteer registration error:", error);
+      throw error;
+    }
+  };  
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
@@ -56,12 +80,21 @@ export default function SignUpPage() {
       const volunteerData = {
         full_name: `${firstName} ${lastName}`,
         email: email,
-        contact_number: contact || null, // allow null fallback
-        committee: null, // default
-        motivation: null, // default
-      };      
+        contact_number: contact || null,
+        committee: null,
+        motivation: null,
+      };
       
-      setSubmitted(true);
+      try {
+        await registerVolunteer(volunteerData);
+      } catch (apiErr: any) {
+        console.error("API registration failed:", apiErr);
+        setError("Failed to register user to the system. Please try again.");
+        return; 
+      }
+      
+      setSubmitted(true);     
+
     } catch (err: any) {
       console.error("Sign-up error:", err);
       setError(err.message || "Something went wrong");
