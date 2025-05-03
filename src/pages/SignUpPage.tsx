@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios"; 
 import InputField from "../components/InputField";
 import Header from "../components/Header";
 
@@ -17,28 +18,22 @@ export default function SignUpPage() {
   const navigate = useNavigate();
 
   const registerVolunteer = async (data: any) => {
-    const API_URL = "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com"; 
-  
+    const API_URL = "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com";
+
     try {
-      const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
+      const response = await axios.post(`${API_URL}/users`, data, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
       });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || "Failed to register volunteer");
-      }
-  
-      console.log("Volunteer registration successful");
-    } catch (error) {
+
+      console.log("Volunteer registration successful:", response.data);
+    } catch (error: any) {
       console.error("Volunteer registration error:", error);
-      throw error;
+      const message = error.response?.data?.detail || "Failed to register volunteer";
+      throw new Error(message);
     }
-  };  
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -69,7 +64,6 @@ export default function SignUpPage() {
       }
 
       const sessionId = signUp.createdSessionId;
-      // Uncomment Below for Debugging
       console.log("Session Id:", sessionId);
       console.log("Sign-up status:", signUp.status);
       console.log("Missing fields:", signUp?.missingFields);
@@ -83,17 +77,16 @@ export default function SignUpPage() {
         committee: null,
         motivation: null,
       };
-      
+
       try {
         await registerVolunteer(volunteerData);
       } catch (apiErr: any) {
         console.error("API registration failed:", apiErr);
         setError("Failed to register user to the system. Please try again.");
-        return; 
+        return;
       }
-      
-      setSubmitted(true);     
 
+      setSubmitted(true);
     } catch (err: any) {
       console.error("Sign-up error:", err);
       setError(err.message || "Something went wrong");
@@ -165,9 +158,8 @@ export default function SignUpPage() {
         </div>
       ) : (
         <Navigate to="./volunteer" />
-      )
-      }
+      )}
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </div >
+    </div>
   );
 }
