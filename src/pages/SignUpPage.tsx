@@ -1,7 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
-import axios from "axios"; 
+import axios from "axios";
 import InputField from "../components/InputField";
 import Header from "../components/Header";
 
@@ -71,11 +71,12 @@ export default function SignUpPage() {
       await setActive({ session: sessionId });
 
       const volunteerData = {
-        full_name: `${firstName} ${lastName}`,
-        email: email,
-        contact_number: contact || null,
-        committee: null,
-        motivation: null,
+        first_name: firstName,
+        last_name: lastName,
+        is_admin: false,
+        contact_info: contact,
+        status: null,
+        email: email
       };
 
       try {
