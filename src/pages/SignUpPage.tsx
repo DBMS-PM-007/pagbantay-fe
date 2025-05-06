@@ -1,9 +1,9 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
+import InputField from "@components/InputField";
+import Header from "@components/Header";
 import axios from "axios";
-import InputField from "../components/InputField";
-import Header from "../components/Header";
 
 export default function SignUpPage() {
   const { isLoaded, signUp, setActive } = useSignUp();

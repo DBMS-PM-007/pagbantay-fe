@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import PagbantayLogo from "../assets/pagbantay_logo.png";
-import LogoContents from "../assets/pagbantay_logo_contents.png";
+import PagbantayLogo from "@assets/pagbantay_logo.png";
+import LogoContents from "@assets/pagbantay_logo_contents.png";
 
 export default function Home() {
   const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignIn } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
-import Header from "../components/Header";
-import PagbantayLogo from "../assets/pagbantay_logo.png";
+import InputField from "@components/InputField";
+import Header from "@components/Header";
+import PagbantayLogo from "@assets/pagbantay_logo.png";
 
 export default function SignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();

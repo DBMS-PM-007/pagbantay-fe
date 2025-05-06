@@ -1,19 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserButton } from "@clerk/clerk-react";
-import RequireAuth from "./components/RequireAuth";
-import LoggedIn from "./components/LoggedIn";
-import Home from "./pages/Home";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
-import AdminDashboard from "./pages/admin/Dashboard";
-import AdminAssignment from "./pages/admin/AssignVolunteers";
-import AdminEvents from "./pages/admin/Events";
-import CreateEvent from "./pages/admin/CreateEvent";
-import EditEvent from "./pages/admin/EditEvent";
-import VolunteerDashboard from "./pages/volunteer/Dashboard";
-import VolunteerEvents from "./pages/volunteer/Events";
-import VolunteerProfile from "./pages/volunteer/Profile";
-import FirstAidGuide from "./pages/volunteer/FirstAidGuide";
+import RequireAuth from "@components/RequireAuth";
+import LoggedIn from "@components/LoggedIn";
+import Home from "@pages/Home";
+import SignInPage from "@pages/SignInPage";
+import SignUpPage from "@pages/SignUpPage";
+import AdminDashboard from "@pages/admin/Dashboard";
+import AdminAssignment from "@pages/admin/AssignVolunteers";
+import AdminEvents from "@pages/admin/Events";
+import CreateEvent from "@pages/admin/CreateEvent";
+import EditEvent from "@pages/admin/EditEvent";
+import VolunteerDashboard from "@pages/volunteer/Dashboard";
+import VolunteerEvents from "@pages/volunteer/Events";
+import VolunteerProfile from "@pages/volunteer/Profile";
+import FirstAidGuide from "@pages/volunteer/FirstAidGuide";
 
 export default function App() {
   return (
