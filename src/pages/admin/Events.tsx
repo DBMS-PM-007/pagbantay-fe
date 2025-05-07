@@ -1,38 +1,49 @@
 import { useEffect, useState } from "react";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import axios from "axios";
 
-// Define a type for the event (adjust based on your actual API shape)
-type Event = {
-  id: string;
-  name: string;
-  date?: string;
-};
+interface Event {
+  event_id: string;
+  admin_id: string;
+  event_name: string;
+  date: string;
+  location: string;
+  description: string;
+}
 
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const API_URL = import.meta.env.VITE_API_URL || "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com";
 
   useEffect(() => {
-    // Fetch events on component load
     const fetchEvents = async () => {
       try {
-        const response = await fetch("http://localhost:8000/events"); // or your actual backend URL
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await axios.get(`${API_URL}/events`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("Fetched events:", response.data);
+        if (!Array.isArray(response.data)) {
+          throw new Error("Expected array response from /events API");
         }
 
-        const data = await response.json();
-        setEvents(data); // Assumes the API returns an array of events
+        setEvents(response.data);
       } catch (err: any) {
-        setError(err.message);
+        console.error("Error fetching events:", err);
+        const message = err.response?.data?.detail || "Failed to fetch events";
+        setError(message);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
     fetchEvents();
-  }, []);
+  }, [API_URL]);
 
   return (
     <>
@@ -41,20 +52,30 @@ export default function Events() {
       </SignedOut>
 
       <SignedIn>
-        <div>
-          <h1>Admin Events</h1>
+        <div className="p-4 text-black bg-white min-h-screen">
+          <h1 className="text-2xl font-bold mb-4">Manage Events</h1>
 
-          {isLoading && <p>Loading events...</p>}
-          {error && <p>Error: {error}</p>}
-          {!isLoading && events.length === 0 && <p>No events found.</p>}
-
-          <ul>
-            {events.map((event) => (
-              <li key={event.id}>
-                {event.name} {event.date && `- ${event.date}`}
-              </li>
-            ))}
-          </ul>
+          {loading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p className="text-red-500">Error: {error}</p>
+          ) : events.length === 0 ? (
+            <p>No Scheduled Events Yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {events.map((event) => (
+                <div
+                  key={event.event_id}
+                  className="p-4 border border-gray-300 rounded-lg shadow-md"
+                >
+                  <h2 className="text-lg font-semibold">{event.event_name}</h2>
+                  <p>Date: {event.date}</p>
+                  <p>Location: {event.location}</p>
+                  <p>{event.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </SignedIn>
     </>
