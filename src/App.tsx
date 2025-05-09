@@ -19,7 +19,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<><RequireAuth /> <UserButton /></>}>
+        <Route element={<RequireAuth />}>
           {/* Admin routes */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/assign-volunteers" element={<AdminAssignment />} />
@@ -30,7 +30,7 @@ export default function App() {
           {/* Volunteer routes */}
           <Route path="/volunteer" element={<VolunteerDashboard />} />
           <Route path="/volunteer/events" element={<VolunteerEvents />} />
-          <Route path="/volunteer/profile" element={<VolunteerProfile />} />
+          <Route path="/volunteer/profile" element={<><VolunteerProfile /> <UserButton /></>} />
           <Route path="/volunteer/first-aid-guide" element={<FirstAidGuide />} />
         </Route>
 
