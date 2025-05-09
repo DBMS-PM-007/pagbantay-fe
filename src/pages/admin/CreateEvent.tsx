@@ -4,7 +4,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export default function CreateEvent() {
   const { user } = useUser();
@@ -33,7 +33,7 @@ export default function CreateEvent() {
       toast("Event created!");
     } catch (err) {
       console.error(err);
-      toast("Failed to create event");
+      toast.error("Failed to create event");
     }
   };
 
@@ -97,7 +97,6 @@ export default function CreateEvent() {
           </div>
         </form>
       </div>
-      <ToastContainer />
       <Footer />
     </div>
   );
