@@ -1,9 +1,9 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
+import InputField from "@components/InputField";
+import Header from "@components/Header";
 import axios from "axios";
-import InputField from "../components/InputField";
-import Header from "../components/Header";
 
 export default function SignUpPage() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -14,19 +14,16 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL
 
   const registerVolunteer = async (data: any) => {
-    const API_URL = "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com";
-
     try {
       const response = await axios.post(`${API_URL}/users`, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
       console.log("Volunteer registration successful:", response.data);
     } catch (error: any) {
       console.error("Volunteer registration error:", error);
