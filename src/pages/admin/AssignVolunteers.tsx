@@ -1,7 +1,80 @@
-export default function AssignVolunteers() {
-  return (
-    <div>Assign Volunteers</div>
-  )
-}
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
+import Header from "@components/Header";
+import Footer from "@components/Footer";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
+export default function AssignVolunteers() {
+  const { user } = useUser();
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/users`);
+        setUsers(response.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load users");
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const filteredUsers = users.filter((user: any) => {
+    const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+    return fullName.includes(searchTerm.toLowerCase());
+  });
+
+  return (
+    <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
+      <Header title="Assign Volunteers" />
+      <div className="w-[300px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
+        <Input
+          className="h-[50px] rounded-[100px] border-black pl-[20px] pr-[20px]"
+          type="text"
+          placeholder="Search Volunteer..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        {filteredUsers.map((user: any) => (
+          <div
+            key={user.user_id}
+            className="w-full flex flex-col h-auto text-sm text-black overflow-hidden font-bold bg-white border border-black rounded-lg text-left
+            shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]"
+          >
+            <div className="w-full flex flex-col h-[50px] justify-center text-sm pl-[20px] pr-[20px] pt-[10px] pb-[5px] text-white font-bold bg-[maroon] border border-black">
+              <h2 className="font-semibold">{user.first_name} {user.last_name}</h2>
+            </div>
+            <div className="flex flex-col gap-3 p-5 font-semibold">
+              <div>
+                <h2 className="pl-[10px] pr-[10px]">Email: {user.email}</h2>
+              </div>
+              <div>
+                <h2 className="pl-[10px] pr-[10px]">Status: {user.status || "N/A"}</h2>
+              </div>
+              <div>
+                <h2 className="pl-[10px] pr-[10px]">Contact: {user.contact_info || "N/A"}</h2>
+              </div>
+              <div>
+                <button
+                  className="w-[auto] text-sm text-black hover:cursor-pointer border border-black pl-[10px] pr-[10px] p-2 rounded-[100px]"
+                >
+                  Assign to Station
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Footer />
+    </div>
+  );
+}
 
