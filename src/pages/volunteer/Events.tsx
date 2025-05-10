@@ -1,11 +1,8 @@
-"use client"
-
 import { useEffect, useState, useRef } from "react"
 import { SignedIn, SignedOut, RedirectToSignIn, useUser, useClerk } from "@clerk/clerk-react"
 import { MapPin, Clock, FileText, ArrowLeft } from "lucide-react"
 import axios from "axios"
 
-// Update the Event type to match your actual API response
 type Event = {
   event_id: string
   admin_id: string
@@ -15,7 +12,6 @@ type Event = {
   description: string
 }
 
-// Define a type for availability records
 type AvailabilityRecord = {
   event_id: string
   user_id: string
@@ -33,22 +29,17 @@ export default function Events() {
   const [userAvailability, setUserAvailability] = useState<{ [eventId: string]: string }>({})
   const [updatingEventId, setUpdatingEventId] = useState<string | null>(null)
 
-  // Store the raw availability data for debugging
   const [rawAvailabilityData, setRawAvailabilityData] = useState<AvailabilityRecord[]>([])
 
-  // Track problematic events for debugging
   const problematicEvents = useRef<Set<string>>(new Set())
 
-  // Store local overrides for availability status
   const [localOverrides, setLocalOverrides] = useState<{ [eventId: string]: string }>({})
 
   const { isLoaded, isSignedIn, user } = useUser()
   const { signOut } = useClerk()
 
-  // Use environment variable for API URL
   const API_URL = import.meta.env.VITE_API_URL
 
-  // Fetch Events on Load
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -67,7 +58,6 @@ export default function Events() {
     fetchEvents()
   }, [API_URL])
 
-  // Get user ID from email
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       const email = user?.primaryEmailAddress?.emailAddress
@@ -87,7 +77,6 @@ export default function Events() {
     }
   }, [isLoaded, isSignedIn, user, API_URL])
 
-  // Fetch availability for current user
   useEffect(() => {
     const fetchUserAvailability = async () => {
       if (!userID) return
@@ -95,21 +84,17 @@ export default function Events() {
       try {
         console.log("Fetching availability for user ID:", userID)
 
-        // Add a timestamp to prevent caching
         const timestamp = new Date().getTime()
         const response = await axios.get(`${API_URL}/availability?_=${timestamp}`)
         console.log("Availability response:", response.data)
 
         const allAvailability = response.data
 
-        // Store raw data for debugging
         setRawAvailabilityData(allAvailability)
 
-        // Filter for current user
         const filtered = allAvailability.filter((a: AvailabilityRecord) => a.user_id === userID)
         console.log("Filtered availability for current user:", filtered)
 
-        // Check for duplicate entries (multiple records for same event)
         const eventCounts: { [key: string]: number } = {}
         filtered.forEach((a: AvailabilityRecord) => {
           eventCounts[a.event_id] = (eventCounts[a.event_id] || 0) + 1
@@ -119,7 +104,6 @@ export default function Events() {
           }
         })
 
-        // Map to object: {event_id: "AVAILABLE" or "UNAVAILABLE"}
         const availabilityMap: { [eventId: string]: string } = {}
         filtered.forEach((a: AvailabilityRecord) => {
           availabilityMap[a.event_id] = a.availability
@@ -128,13 +112,10 @@ export default function Events() {
 
         console.log("Final availability map:", availabilityMap)
 
-        // Apply any local overrides
         const mergedAvailability = { ...availabilityMap }
 
-        // Only apply overrides for this specific user
         if (userID) {
           Object.keys(localOverrides).forEach((key) => {
-            // Check if the key contains the userID (format: "eventId_userId")
             const [eventId, storedUserId] = key.split("_")
             if (storedUserId === userID) {
               mergedAvailability[eventId] = localOverrides[key]
@@ -152,7 +133,6 @@ export default function Events() {
     if (userID) fetchUserAvailability()
   }, [userID, API_URL, localOverrides])
 
-  // Close profile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
@@ -161,7 +141,6 @@ export default function Events() {
       }
     }
 
-    // Close dropdown when clicking outside
     const handleDropdownClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement
       if (!target.closest(".availability-dropdown") && !target.closest(".availability-button")) {
@@ -178,7 +157,6 @@ export default function Events() {
     }
   }, [])
 
-  // Hide Clerk user button
   useEffect(() => {
     const style = document.createElement("style")
     style.textContent = `
@@ -199,14 +177,12 @@ export default function Events() {
     }
   }, [])
 
-  // Find existing availability record for an event
   const findExistingAvailabilityRecord = (eventId: string) => {
     return rawAvailabilityData.find(
       (record: AvailabilityRecord) => record.user_id === userID && record.event_id === eventId,
     )
   }
 
-  // Handle availability submission with local override support
   const handleAvailability = async (eventId: string, isAvailable: boolean) => {
     if (!userID) {
       alert("User ID not loaded yet.")
@@ -218,17 +194,14 @@ export default function Events() {
     console.log(`Setting event ${eventId} to ${availabilityStatus}`)
 
     try {
-      // Find if there's an existing record for this event
       const existingRecord = findExistingAvailabilityRecord(eventId)
       console.log("Existing availability record:", existingRecord)
 
-      // Update local state immediately for better UX
       setUserAvailability((prev) => ({
         ...prev,
         [eventId]: availabilityStatus,
       }))
 
-      // Make the API request
       const response = await axios.post(`${API_URL}/availability`, {
         event_id: eventId,
         user_id: userID,
@@ -238,10 +211,8 @@ export default function Events() {
 
       console.log("Availability update response:", response.data)
 
-      // Close the dropdown
       setActiveDropdown(null)
 
-      // Create a local override to ensure the UI stays consistent
       const overrideKey = `${eventId}_${userID}`
       setLocalOverrides((prev) => ({
         ...prev,
@@ -251,7 +222,6 @@ export default function Events() {
       console.error("Failed to update availability:", err)
       alert("Failed to mark availability. Please try again.")
 
-      // Create a local override on API error
       const overrideKey = `${eventId}_${userID}`
       setLocalOverrides((prev) => ({
         ...prev,
@@ -262,7 +232,6 @@ export default function Events() {
     }
   }
 
-  // Toggle dropdown
   const toggleDropdown = (eventId: string) => {
     if (activeDropdown === eventId) {
       setActiveDropdown(null)
@@ -271,7 +240,6 @@ export default function Events() {
     }
   }
 
-  // Format event date
   function formatEventDate(dateStr: string) {
     try {
       const date = new Date(dateStr)
@@ -290,7 +258,6 @@ export default function Events() {
     }
   }
 
-  // Retry loading events
   const retryFetchEvents = async () => {
     setLoading(true)
     setError("")
@@ -306,22 +273,18 @@ export default function Events() {
     }
   }
 
-  // Toggle profile menu
   const toggleProfileMenu = () => {
     setShowProfileMenu(!showProfileMenu)
   }
 
-  // Handle sign out
   const handleSignOut = () => {
     signOut()
   }
 
-  // Handle manage account
   const handleManageAccount = () => {
     window.location.href = "/user/account"
   }
 
-  // Get availability button style
   const getAvailabilityButtonStyle = (eventId: string) => {
     if (updatingEventId === eventId) {
       return "bg-gray-400 text-white cursor-wait"
@@ -338,7 +301,6 @@ export default function Events() {
     }
   }
 
-  // Get availability button text
   const getAvailabilityButtonText = (eventId: string) => {
     if (updatingEventId === eventId) {
       return "Updating..."
@@ -362,9 +324,7 @@ export default function Events() {
       </SignedOut>
 
       <SignedIn>
-        {/* Use a responsive container that adapts to screen size */}
         <div className="flex flex-col min-h-screen w-full bg-white overflow-hidden">
-          {/* Header with black border bottom and fixed position */}
           <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-black w-full">
             <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-xl">
               <div className="flex items-center py-4">
@@ -376,10 +336,8 @@ export default function Events() {
             </div>
           </div>
 
-          {/* Main Content - Added padding-top to account for fixed header */}
           <div className="flex-1 w-full p-4 pt-20 pb-20 overflow-y-auto overflow-x-hidden">
             <div className="container mx-auto px-0 sm:px-4 md:px-6 lg:px-8 max-w-screen-xl">
-              {/* Error message with proper spacing */}
               {error && (
                 <div className="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
                   <span className="block sm:inline">{error}</span>
@@ -392,14 +350,12 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Loading spinner */}
               {loading && (
                 <div className="flex justify-center items-center h-40">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#831005]"></div>
                 </div>
               )}
 
-              {/* Empty state */}
               {!loading && !error && events.length === 0 && (
                 <div className="bg-white rounded-lg shadow-md p-6 text-center">
                   <div className="flex justify-center mb-2">
@@ -410,7 +366,6 @@ export default function Events() {
                 </div>
               )}
 
-              {/* Events list - Updated to match Figma design and API response structure */}
               {!loading && !error && events.length > 0 && (
                 <div className="space-y-6 max-w-3xl mx-auto">
                   {events.map((event) => (
@@ -419,7 +374,6 @@ export default function Events() {
                       className="bg-white rounded-lg shadow-md border border-black overflow-hidden"
                     >
                       <div className="bg-[#831005] text-white p-4">
-                        {/* Event name: centered on mobile, left-aligned on desktop */}
                         <h2 className="text-xl font-bold text-center sm:text-left">{event.event_name}</h2>
                       </div>
                       <div className="p-4 space-y-3">
@@ -437,7 +391,6 @@ export default function Events() {
                         </div>
 
                         <div className="flex justify-end relative mt-2">
-                          {/* Availability button - Fixed positioning and styling */}
                           {userAvailability[event.event_id] === "AVAILABLE" ? (
                             <button
                               className="px-4 py-2 rounded text-sm font-medium bg-[#B32113] hover:bg-[#a01d10] text-white"
@@ -464,7 +417,6 @@ export default function Events() {
                             </button>
                           )}
 
-                          {/* Fixed dropdown positioning to ensure it's visible */}
                           {activeDropdown === event.event_id && (
                             <div className="availability-dropdown absolute right-0 bottom-full mb-1 w-48 bg-white border border-[#D9D9D9] rounded-md shadow-lg z-30">
                               <div className="py-1">
@@ -506,7 +458,6 @@ export default function Events() {
             </div>
           </div>
 
-          {/* Bottom Navigation with black border top */}
           <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-black w-full z-20">
             <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-xl">
               <div className="flex justify-around items-center py-3">
@@ -565,7 +516,6 @@ export default function Events() {
                   <span className="text-xs mt-1 font-bold">GUIDE</span>
                 </a>
 
-                {/* Integrated Profile Button with Custom Menu */}
                 <div className="relative profile-button">
                   <button onClick={toggleProfileMenu} className="flex flex-col items-center focus:outline-none">
                     <svg
@@ -585,7 +535,6 @@ export default function Events() {
                     <span className="text-xs mt-1 font-bold">PROFILE</span>
                   </button>
 
-                  {/* Custom Profile Menu */}
                   {showProfileMenu && (
                     <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-md shadow-lg py-1 z-50 profile-menu">
                       <div className="px-4 py-3 border-b border-gray-100">
