@@ -7,7 +7,7 @@ import Home from "@pages/Home";
 import SignInPage from "@pages/SignInPage";
 import SignUpPage from "@pages/SignUpPage";
 import AdminDashboard from "@pages/admin/Dashboard";
-import AdminAssignment from "@pages/admin/AssignVolunteers";
+import AssignVolunteers from "@pages/admin/AssignVolunteers";
 import AdminEvents from "@pages/admin/Events";
 import CreateEvent from "@pages/admin/CreateEvent";
 import EditEvent from "@pages/admin/EditEvent";
@@ -26,7 +26,7 @@ export default function App() {
             <Route element={<RequireAdmin />}>
               {/* Admin routes */}
               <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/assign-volunteers" element={<AdminAssignment />} />
+              <Route path="/admin/assign-volunteers" element={<AssignVolunteers />} />
               <Route path="/admin/events" element={<AdminEvents />} />
               <Route path="/admin/events/create" element={<CreateEvent />} />
               <Route path="/admin/events/edit" element={<EditEvent />} />

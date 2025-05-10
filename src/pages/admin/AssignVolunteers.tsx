@@ -1,6 +1,6 @@
-export default function AdminAssignment() {
+export default function AssignVolunteers() {
   return (
-    <div>Admin Assignment</div>
+    <div>Assign Volunteers</div>
   )
 }
 
