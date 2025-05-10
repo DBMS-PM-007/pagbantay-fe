@@ -38,7 +38,7 @@ export default function CreateEvent() {
   };
 
   return (
-    <div className="w-screen h-screen text-center items-center flex flex-col justify-between space-y-4 bg-white text-black">
+    <div className="w-screen h-screen text-center items-center flex flex-col justify-center space-y-4 bg-white text-black">
       <Header title="CREATE EVENT" />
       <div className="w-[300px] align-middle flex flex-col gap-[20px]">
         <form
