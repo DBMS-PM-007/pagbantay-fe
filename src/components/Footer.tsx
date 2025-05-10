@@ -13,7 +13,7 @@ export default function Footer() {
   ];
 
   return (
-    <div className="w-full flex flex-row justify-center border-t p-4">
+    <div className="fixed bottom-0 bg-white w-full flex flex-row justify-center border-t p-4 z-10">
       <div className="w-[400px] justify-between flex flex-row items-center text-center text-[10px]">
         {navItems.map(({ label, path, Icon }) => (
           <NavLink
