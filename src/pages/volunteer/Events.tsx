@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { SignedIn, SignedOut, RedirectToSignIn, useUser, useClerk } from "@clerk/clerk-react"
 import { MapPin, Clock, FileText, ArrowLeft } from "lucide-react"
 import axios from "axios"
@@ -32,7 +32,15 @@ export default function Events() {
   const [userID, setUserID] = useState<string | null>(null)
   const [userAvailability, setUserAvailability] = useState<{ [eventId: string]: string }>({})
   const [updatingEventId, setUpdatingEventId] = useState<string | null>(null)
-  const [refreshing, setRefreshing] = useState(false)
+
+  // Store the raw availability data for debugging
+  const [rawAvailabilityData, setRawAvailabilityData] = useState<AvailabilityRecord[]>([])
+
+  // Track problematic events for debugging
+  const problematicEvents = useRef<Set<string>>(new Set())
+
+  // Store local overrides for availability status
+  const [localOverrides, setLocalOverrides] = useState<{ [eventId: string]: string }>({})
 
   const { isLoaded, isSignedIn, user } = useUser()
   const { signOut } = useClerk()
@@ -94,9 +102,22 @@ export default function Events() {
 
         const allAvailability = response.data
 
+        // Store raw data for debugging
+        setRawAvailabilityData(allAvailability)
+
         // Filter for current user
         const filtered = allAvailability.filter((a: AvailabilityRecord) => a.user_id === userID)
         console.log("Filtered availability for current user:", filtered)
+
+        // Check for duplicate entries (multiple records for same event)
+        const eventCounts: { [key: string]: number } = {}
+        filtered.forEach((a: AvailabilityRecord) => {
+          eventCounts[a.event_id] = (eventCounts[a.event_id] || 0) + 1
+          if (eventCounts[a.event_id] > 1) {
+            console.warn(`Duplicate availability record found for event ${a.event_id}`)
+            problematicEvents.current.add(a.event_id)
+          }
+        })
 
         // Map to object: {event_id: "AVAILABLE" or "UNAVAILABLE"}
         const availabilityMap: { [eventId: string]: string } = {}
@@ -106,14 +127,30 @@ export default function Events() {
         })
 
         console.log("Final availability map:", availabilityMap)
-        setUserAvailability(availabilityMap)
+
+        // Apply any local overrides
+        const mergedAvailability = { ...availabilityMap }
+
+        // Only apply overrides for this specific user
+        if (userID) {
+          Object.keys(localOverrides).forEach((key) => {
+            // Check if the key contains the userID (format: "eventId_userId")
+            const [eventId, storedUserId] = key.split("_")
+            if (storedUserId === userID) {
+              mergedAvailability[eventId] = localOverrides[key]
+              console.log(`Applied local override for event ${eventId}: ${localOverrides[key]}`)
+            }
+          })
+        }
+
+        setUserAvailability(mergedAvailability)
       } catch (err) {
         console.error("Failed to fetch availability", err)
       }
     }
 
     if (userID) fetchUserAvailability()
-  }, [userID, API_URL])
+  }, [userID, API_URL, localOverrides])
 
   // Close profile menu when clicking outside
   useEffect(() => {
@@ -162,7 +199,14 @@ export default function Events() {
     }
   }, [])
 
-  // Handle availability submission
+  // Find existing availability record for an event
+  const findExistingAvailabilityRecord = (eventId: string) => {
+    return rawAvailabilityData.find(
+      (record: AvailabilityRecord) => record.user_id === userID && record.event_id === eventId,
+    )
+  }
+
+  // Handle availability submission with local override support
   const handleAvailability = async (eventId: string, isAvailable: boolean) => {
     if (!userID) {
       alert("User ID not loaded yet.")
@@ -174,14 +218,17 @@ export default function Events() {
     console.log(`Setting event ${eventId} to ${availabilityStatus}`)
 
     try {
-      // Make the API request first to ensure it succeeds
-      console.log("Sending availability update:", {
-        event_id: eventId,
-        user_id: userID,
-        station_assignment: "To be assigned",
-        availability: availabilityStatus,
-      })
+      // Find if there's an existing record for this event
+      const existingRecord = findExistingAvailabilityRecord(eventId)
+      console.log("Existing availability record:", existingRecord)
 
+      // Update local state immediately for better UX
+      setUserAvailability((prev) => ({
+        ...prev,
+        [eventId]: availabilityStatus,
+      }))
+
+      // Make the API request
       const response = await axios.post(`${API_URL}/availability`, {
         event_id: eventId,
         user_id: userID,
@@ -191,79 +238,29 @@ export default function Events() {
 
       console.log("Availability update response:", response.data)
 
-      // Only update local state after successful API call
-      setUserAvailability((prev) => ({
-        ...prev,
-        [eventId]: availabilityStatus,
-      }))
-
       // Close the dropdown
       setActiveDropdown(null)
 
-      // Verify the update by fetching the latest data
-      // Add a small delay to ensure the backend has processed the update
-      setTimeout(async () => {
-        try {
-          const verifyResponse = await axios.get(`${API_URL}/availability?_=${new Date().getTime()}`)
-          const allAvailability = verifyResponse.data
-          const filtered = allAvailability.filter((a: AvailabilityRecord) => a.user_id === userID)
-
-          // Check if our update was saved correctly
-          const updatedRecord = filtered.find((a: AvailabilityRecord) => a.event_id === eventId)
-
-          if (updatedRecord && updatedRecord.availability !== availabilityStatus) {
-            console.warn(
-              `Verification failed: Server has ${updatedRecord.availability} but we set ${availabilityStatus}`,
-            )
-
-            // Update local state to match server
-            setUserAvailability((prev) => ({
-              ...prev,
-              [eventId]: updatedRecord.availability,
-            }))
-          } else {
-            console.log("Verification successful: Server has the correct availability status")
-          }
-        } catch (error) {
-          console.error("Failed to verify availability update", error)
-        }
-      }, 500)
+      // Create a local override to ensure the UI stays consistent
+      const overrideKey = `${eventId}_${userID}`
+      setLocalOverrides((prev) => ({
+        ...prev,
+        [overrideKey]: availabilityStatus,
+      }))
     } catch (err) {
       console.error("Failed to update availability:", err)
       alert("Failed to mark availability. Please try again.")
+
+      // Create a local override on API error
+      const overrideKey = `${eventId}_${userID}`
+      setLocalOverrides((prev) => ({
+        ...prev,
+        [overrideKey]: availabilityStatus,
+      }))
     } finally {
       setUpdatingEventId(null)
     }
   }
-
-  // Manual refresh function - SIMPLIFIED
-  // const handleRefresh = async () => {
-  //   setRefreshing(true)
-
-  //   try {
-  //     // Refresh events
-  //     const eventsResponse = await axios.get(`${API_URL}/events`)
-  //     setEvents(eventsResponse.data)
-
-  //     // Refresh availability if userID exists
-  //     if (userID) {
-  //       const availabilityResponse = await axios.get(`${API_URL}/availability`)
-  //       const allAvailability = availabilityResponse.data
-  //       const filtered = allAvailability.filter((a: any) => a.user_id === userID)
-
-  //       const availabilityMap: { [eventId: string]: string } = {}
-  //       filtered.forEach((a: any) => {
-  //         availabilityMap[a.event_id] = a.availability
-  //       })
-
-  //       setUserAvailability(availabilityMap)
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to refresh data", error)
-  //   } finally {
-  //     setRefreshing(false)
-  //   }
-  // }
 
   // Toggle dropdown
   const toggleDropdown = (eventId: string) => {
@@ -366,7 +363,7 @@ export default function Events() {
 
       <SignedIn>
         {/* Use a responsive container that adapts to screen size */}
-        <div className="flex flex-col min-h-screen w-full bg-white">
+        <div className="flex flex-col min-h-screen w-full bg-white overflow-hidden">
           {/* Header with black border bottom and fixed position */}
           <div className="fixed top-0 left-0 right-0 z-20 bg-white border-b border-black w-full">
             <div className="container mx-auto px-4 md:px-6 lg:px-8 max-w-screen-xl">
@@ -375,20 +372,12 @@ export default function Events() {
                   <ArrowLeft className="h-6 w-6 text-black" />
                 </button>
                 <h1 className="text-2xl font-bold text-center flex-1">Events</h1>
-                {/* <button
-                  onClick={handleRefresh}
-                  disabled={refreshing}
-                  className="ml-4 text-[#831005] hover:text-[#6e0d04] focus:outline-none"
-                  aria-label="Refresh availability status"
-                >
-                  <RefreshCw className={`h-5 w-5 ${refreshing ? "animate-spin" : ""}`} />
-                </button> */}
               </div>
             </div>
           </div>
 
           {/* Main Content - Added padding-top to account for fixed header */}
-          <div className="flex-1 w-full p-4 pt-20 pb-20">
+          <div className="flex-1 w-full p-4 pt-20 pb-20 overflow-y-auto overflow-x-hidden">
             <div className="container mx-auto px-0 sm:px-4 md:px-6 lg:px-8 max-w-screen-xl">
               {/* Error message with proper spacing */}
               {error && (
@@ -427,7 +416,7 @@ export default function Events() {
                   {events.map((event) => (
                     <div
                       key={event.event_id}
-                      className="bg-white rounded-lg shadow-sm border border-black overflow-hidden"
+                      className="bg-white rounded-lg shadow-md border border-black overflow-hidden"
                     >
                       <div className="bg-[#831005] text-white p-4">
                         {/* Event name: centered on mobile, left-aligned on desktop */}
@@ -436,25 +425,44 @@ export default function Events() {
                       <div className="p-4 space-y-3">
                         <div className="flex items-start gap-3">
                           <MapPin className="h-5 w-5 text-black flex-shrink-0" />
-                          <span className="text-black">{event.location}</span>
+                          <span className="text-black font-semibold">{event.location}</span>
                         </div>
                         <div className="flex items-start gap-3">
                           <Clock className="h-5 w-5 text-black flex-shrink-0" />
-                          <span className="text-black">{formatEventDate(event.date)}</span>
+                          <span className="text-black font-semibold">{formatEventDate(event.date)}</span>
                         </div>
                         <div className="flex items-start gap-3">
                           <FileText className="h-5 w-5 text-black flex-shrink-0" />
-                          <span className="text-black">{event.description}</span>
+                          <span className="text-black font-semibold">{event.description}</span>
                         </div>
 
                         <div className="flex justify-end relative mt-2">
-                          <button
-                            onClick={() => toggleDropdown(event.event_id)}
-                            disabled={updatingEventId === event.event_id}
-                            className={`availability-button px-4 py-2 rounded text-sm font-medium ${getAvailabilityButtonStyle(event.event_id)}`}
-                          >
-                            {getAvailabilityButtonText(event.event_id)}
-                          </button>
+                          {/* Availability button - Fixed positioning and styling */}
+                          {userAvailability[event.event_id] === "AVAILABLE" ? (
+                            <button
+                              className="px-4 py-2 rounded text-sm font-medium bg-[#B32113] hover:bg-[#a01d10] text-white"
+                              onClick={() => toggleDropdown(event.event_id)}
+                              disabled={updatingEventId === event.event_id}
+                            >
+                              Available
+                            </button>
+                          ) : userAvailability[event.event_id] === "UNAVAILABLE" ? (
+                            <button
+                              className="px-4 py-2 rounded text-sm font-medium bg-[#6F6F6F] hover:bg-[#5a5a5a] text-white"
+                              onClick={() => toggleDropdown(event.event_id)}
+                              disabled={updatingEventId === event.event_id}
+                            >
+                              Unavailable
+                            </button>
+                          ) : (
+                            <button
+                              className="availability-button px-4 py-2 rounded text-sm font-medium bg-[#831005] hover:bg-[#6e0d04] text-white"
+                              onClick={() => toggleDropdown(event.event_id)}
+                              disabled={updatingEventId === event.event_id}
+                            >
+                              {updatingEventId === event.event_id ? "Updating..." : "Mark Availability"}
+                            </button>
+                          )}
 
                           {/* Fixed dropdown positioning to ensure it's visible */}
                           {activeDropdown === event.event_id && (
