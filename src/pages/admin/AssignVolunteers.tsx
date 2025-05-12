@@ -54,13 +54,20 @@ export default function AssignVolunteers() {
             </div>
             <div className="flex flex-col gap-3 p-5 font-semibold">
               <div>
-                <h2 className="pl-[10px] pr-[10px]">Email: {user.email}</h2>
+                <h2>Email: </h2>
+                <h2 className="text-xs pl-[10px] pr-[10px]">{user.email}</h2>
               </div>
               <div>
-                <h2 className="pl-[10px] pr-[10px]">Status: {user.status || "N/A"}</h2>
-              </div>
-              <div>
-                <h2 className="pl-[10px] pr-[10px]">Contact: {user.contact_info || "N/A"}</h2>
+                <h2>Assigned to:</h2>
+                {user.assignments && user.assignments.length > 0 ? (
+                  user.assignments.map((assignment: any) => (
+                    <h2 key={assignment.assignment_id} className="text-xs pl-[10px] pr-[10px]">
+                      {assignment.event?.event_name || "Unnamed Event"}
+                    </h2>
+                  ))
+                ) : (
+                  <h2 className="text-xs pl-[10px] pr-[10px]">Not Assigned to any events</h2>
+                )}
               </div>
               <div>
                 <button
