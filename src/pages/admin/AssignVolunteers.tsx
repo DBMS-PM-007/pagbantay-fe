@@ -2,9 +2,15 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
-import { Input } from "@/components/ui/input";
+import { Input } from "@components/ui/input";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@components/ui/dropdown-menu";
 
 export default function AssignVolunteers() {
   const { user } = useUser();
@@ -30,6 +36,10 @@ export default function AssignVolunteers() {
     const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
   });
+
+  const handleAssignToStation = (eventId: string, station: string) => {
+    console.log(`Assigned to event ${eventId} at station ${station}`);
+  };
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
@@ -70,11 +80,29 @@ export default function AssignVolunteers() {
                 )}
               </div>
               <div>
-                <button
-                  className="w-[auto] text-sm text-black hover:cursor-pointer border border-black pl-[10px] pr-[10px] p-2 rounded-[100px]"
-                >
-                  Assign to Station
-                </button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="w-auto text-sm text-black border border-black px-4 py-2 rounded-[100px]">
+                      Assign to Station
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    {user.availability && user.availability.filter((a: any) => a.availability === "AVAILABLE").length != 0 ? (
+                      user.availability
+                        .filter((a: any) => a.availability != "UNAVAILABLE" && a.event)
+                        .map((a: any) => (
+                          <DropdownMenuItem
+                            key={a.availability_id}
+                            onClick={() => handleAssignToStation(a.event.event_id, a.station_assignment)}
+                          >
+                            {a.event.event_name} - {a.event.location}
+                          </DropdownMenuItem>
+                        ))
+                    ) : (
+                      <DropdownMenuItem disabled>No available events</DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
