@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import Header from "@components/Header";
+import Footer from "@components/Footer";
 import { useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -8,10 +10,6 @@ import {
   Tent,
   Pencil,
   Search,
-  ArrowLeft, 
-  LayoutGrid,
-  ClipboardList,
-  AlertTriangle,
   Plus,
 } from "lucide-react";
 import axios from "axios";
@@ -76,22 +74,10 @@ export default function Events() {
   
       <SignedIn>
         <div className="min-h-screen w-full bg-white text-black flex flex-col">
-  
-          <div className="w-full flex items-center justify-between px-4 sm:px-10 pt-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="absolute left-5 hover:text-[maroon]/80 text-2xl font-bold mt-3"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <h1 className="text-2xl md:text-3xl font-bold text-center flex-1 mt-1 -ml-3">Manage Events</h1>
-          </div>
-  
-          <hr className="w-full border-t border-black-500 mt-4 mb-8" />
-  
+          <Header title="MANAGE EVENTS" />
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-32">
             
-            <div className="relative w-full max-w-md mb-10 mx-auto">
+            <div className="relative w-full max-w-md mb-10 mt-4 mx-auto">
               <input
                 type="text"
                 placeholder="Search event name..."
@@ -234,58 +220,21 @@ export default function Events() {
               </div>
             )}            
           </div>  
-
-          <nav className="fixed bottom-0 left-0 w-full bg-white border-t border-black-500 text-black py-1 z-50">
-            <div className="flex justify-around items-center">
-              
-              <button
-                onClick={() => navigate('/admin')}
-                className="flex flex-col items-center text-sm hover:text-[maroon]"
-              >
-                <LayoutGrid className="w-5 h-5" />
-                <span className="font-bold text-xs">DASHBOARD</span>
-              </button>
-
-              <button
-                onClick={() => navigate('/admin/events')}
-                className="flex flex-col items-center text-sm text-[maroon]"
-              >
-                <Calendar className="w-5 h-5" />
-                <span className="font-bold text-xs">EVENTS</span>
-              </button>
-
-              <button
-                onClick={() => navigate('/admin/assign-volunteers')}
-                className="flex flex-col items-center text-sm hover:text-[maroon]"
-              >
-                <ClipboardList className="w-5 h-5" />
-                <span className="font-bold text-xs">ASSIGN</span>
-              </button>
-
-              <button
-                onClick={() => navigate('/admin')}
-                className="flex flex-col items-center text-sm hover:text-[maroon]"
-              >
-                <AlertTriangle className="w-5 h-5" />
-                <span className="font-bold text-xs">EMERGENCY</span>
-              </button>
-            </div>
-            
-            <div className="fixed bottom-[56px] right-4 z-50 flex flex-col items-center">
-              <button
+          <div className="fixed bottom-[80px] right-4 z-50 flex flex-col items-center">
+            <button
+              onClick={() => navigate('/admin/events/create')}
+              className="bg-[maroon] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-[maroon]/90"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+              <span 
                 onClick={() => navigate('/admin/events/create')}
-                className="bg-[maroon] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-[maroon]/90"
+                className="mt-1 text-[maroon] text-sm font-semibold"
               >
-                <Plus className="w-4 h-4" />
-              </button>
-                <span 
-                  onClick={() => navigate('/admin/events/create')}
-                  className="mt-1 text-[maroon] text-sm font-semibold"
-                >
-                  Add an Event
-                </span>
-            </div>
-          </nav>
+                Add an Event
+              </span>
+          </div>
+          <Footer />
         </div>
       </SignedIn>
     </>
