@@ -162,7 +162,7 @@ export default function Events() {
                 </div>
                 <button 
                   onClick={() => navigate('/admin/events/edit')}
-                  className="absolute bottom-4 right-4 flex items-center gap-2 bg-[maroon] text-white px-4 py-2 rounded-md shadow hover:bg-[maroon]/90 transition"
+                  className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                 >
                   <Pencil className="w-4 h-4" />
                   <span>Edit</span>
@@ -210,7 +210,7 @@ export default function Events() {
                     </div>
                     <button 
                       onClick={() => navigate('/admin/events/edit')}
-                      className="absolute bottom-4 right-4 flex items-center gap-2 bg-[maroon] text-white px-4 py-2 rounded-md shadow hover:bg-[maroon]/90 transition"
+                      className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                     >
                       <Pencil className="w-4 h-4" />
                       <span>Edit</span>
