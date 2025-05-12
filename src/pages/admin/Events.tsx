@@ -147,17 +147,17 @@ export default function Events() {
                 </div>
 
                 <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[60px] text-sm gap-[20px]">
-                  <p className="flex items-center gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{selectedEvent.date}</span>
+                  <p className="flex items-start gap-2">
+                    <Clock className="w-4 h-4 flex-shrink-0 mt-1" />
+                    <span className="break-words">{selectedEvent.date}</span>
                   </p>
-                  <p className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    <span>{selectedEvent.location}</span>
+                  <p className="flex items-start gap-2">
+                    <MapPin className="w-4 h-4 flex-shrink-0 mt-1" />
+                    <span className="break-words">{selectedEvent.location}</span>
                   </p>
-                  <p className="flex items-center gap-2">
-                    <ClipboardList className="w-4 h-4" />
-                    <span>{selectedEvent.description}</span>
+                  <p className="flex items-start gap-2">
+                    <ClipboardList className="w-4 h-4 flex-shrink-0 mt-1" />
+                    <span className="break-words">{selectedEvent.description}</span>
                   </p>
                 </div>
                 <button 
@@ -195,17 +195,17 @@ export default function Events() {
                     </div>
 
                     <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[60px] text-sm gap-[20px]">
-                      <p className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        <span>{event.date}</span>
+                      <p className="flex items-start gap-2">
+                        <Clock className="w-4 h-4 flex-shrink-0 mt-1" />
+                        <span className="break-words">{event.date}</span>
                       </p>
-                      <p className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4" />
-                        <span>{event.location}</span>
+                      <p className="flex items-start gap-2">
+                        <MapPin className="w-4 h-4 flex-shrink-0 mt-1" />
+                        <span className="break-words">{event.location}</span>
                       </p>
-                      <p className="flex items-center gap-2">
-                        <ClipboardList className="w-4 h-4" />
-                        <span>{event.description}</span>
+                      <p className="flex items-start gap-2">
+                        <ClipboardList className="w-4 h-4 flex-shrink-0 mt-1" />
+                        <span className="break-words">{event.description}</span>
                       </p>
                     </div>
                     <button 
