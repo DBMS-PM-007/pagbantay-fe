@@ -8,6 +8,7 @@ import {
   Clock,
   MapPin,
   Tent,
+  ClipboardList,
   Pencil,
   Search,
   Plus,
@@ -156,7 +157,7 @@ export default function Events() {
                     <span>{selectedEvent.location}</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Tent className="w-4 h-4" />
+                    <ClipboardList className="w-4 h-4" />
                     <span>{selectedEvent.description}</span>
                   </p>
                 </div>
@@ -204,7 +205,7 @@ export default function Events() {
                         <span>{event.location}</span>
                       </p>
                       <p className="flex items-center gap-2">
-                        <Tent className="w-4 h-4" />
+                        <ClipboardList className="w-4 h-4" />
                         <span>{event.description}</span>
                       </p>
                     </div>
