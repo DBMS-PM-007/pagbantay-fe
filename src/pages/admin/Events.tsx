@@ -33,7 +33,7 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = import.meta.env.VITE_API_URL || "https://vozfgc1nwa.execute-api.ap-southeast-1.amazonaws.com";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchEvents = async () => {
