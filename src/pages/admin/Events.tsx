@@ -7,7 +7,6 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Tent,
   ClipboardList,
   Pencil,
   Search,
@@ -221,19 +220,21 @@ export default function Events() {
               </div>
             )}            
           </div>  
-          <div className="fixed bottom-[80px] right-4 z-50 flex flex-col items-center">
-            <button
-              onClick={() => navigate('/admin/events/create')}
-              className="bg-[maroon] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-[maroon]/90"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-              <span 
+          <div className="w-full max-w-5xl mb-2 mx-auto px-4 sm:px-10 mt-8 flex justify-end">
+            <div className="flex flex-col items-center">
+              <button
                 onClick={() => navigate('/admin/events/create')}
-                className="mt-1 text-[maroon] text-sm font-semibold"
+                className="flex items-center justify-center gap-2 px-2 py-2 bg-[maroon] text-white rounded-full shadow hover:bg-[maroon]/90 transition"
               >
-                Add an Event
-              </span>
+                <Plus className="w-4 h-4" />
+              </button>
+                <span 
+                  onClick={() => navigate('/admin/events/create')}
+                  className="mt-1 text-[maroon] text-xs font-semibold cursor-pointer"
+                >
+                  Add an Event
+                </span>
+            </div>
           </div>
           <Footer />
         </div>
