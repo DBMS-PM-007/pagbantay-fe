@@ -30,10 +30,17 @@ export default function AssignVolunteers() {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter((user: any) => {
-    const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
-    return fullName.includes(searchTerm.toLowerCase());
-  });
+  const filteredUsers = users
+    .filter((user: any) => {
+      const fullName = `${user.first_name} ${user.last_name}`.toLowerCase();
+      return fullName.includes(searchTerm.toLowerCase());
+    })
+    .sort((a: any, b: any) => {
+      const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
+      const nameB = `${b.first_name} ${b.last_name}`.toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
 
   const handleAssignToStation = async (
     eventId: string,
