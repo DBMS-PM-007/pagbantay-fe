@@ -10,6 +10,7 @@ import AssignVolunteers from "@pages/admin/AssignVolunteers";
 import AdminEvents from "@pages/admin/Events";
 import CreateEvent from "@pages/admin/CreateEvent";
 import EditEvent from "@pages/admin/EditEvent";
+import Emergency from "@pages/admin/Emergency";
 import VolunteerDashboard from "@pages/volunteer/Dashboard";
 import VolunteerEvents from "@pages/volunteer/Events";
 import VolunteerProfile from "@pages/volunteer/Profile";
@@ -31,6 +32,7 @@ export default function App() {
                 <Route path="/admin/events" element={<AdminEvents />} />
                 <Route path="/admin/events/create" element={<CreateEvent />} />
                 <Route path="/admin/events/edit" element={<EditEvent />} />
+                <Route path="/admin/emergency" element={<Emergency />} />
               </Route>
             </Route>
 
