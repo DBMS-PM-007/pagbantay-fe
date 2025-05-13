@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
 import { Input } from "@components/ui/input";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -63,7 +61,6 @@ export default function AssignVolunteers() {
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-      <Header title="Assign Volunteers" />
       <div className="w-[300px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
         <Input
           className="h-[50px] rounded-[100px] border-black pl-[20px] pr-[20px]"
@@ -133,7 +130,6 @@ export default function AssignVolunteers() {
           </div>
         ))}
       </div>
-      <Footer />
     </div>
   );
 }

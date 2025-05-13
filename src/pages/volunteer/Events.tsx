@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { MapPin, Clock, FileText } from "lucide-react"
-import Header from "@/components/Header"
-import BottomNav from "@/components/BottomNav"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -103,7 +101,6 @@ export default function Events() {
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-      <Header title="Assign Volunteers" />
       {loading && <p>Loading events...</p>}
       {error && <p className="text-red-600">{error}</p>}
 
@@ -156,7 +153,6 @@ export default function Events() {
           ))}
         </div>
       )}
-      <BottomNav type="volunteer" />
     </div>
   )
 }

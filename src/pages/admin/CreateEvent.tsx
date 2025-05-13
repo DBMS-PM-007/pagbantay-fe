@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { toast } from 'react-toastify';
@@ -39,7 +37,6 @@ export default function CreateEvent() {
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col justify-center space-y-4 bg-white text-black">
-      <Header title="CREATE EVENT" />
       <div className="w-[300px] align-middle flex flex-col gap-[20px]">
         <form
           className="w-full h-full flex flex-col justify-center gap-2"
@@ -97,7 +94,6 @@ export default function CreateEvent() {
           </div>
         </form>
       </div>
-      <Footer />
     </div>
   );
 }
