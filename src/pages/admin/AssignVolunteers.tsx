@@ -8,11 +8,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@components/ui/dropdown-menu";
+import Loader from "@components/Loader.tsx"
 
 export default function AssignVolunteers() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [refetch, setRefetch] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -23,6 +25,8 @@ export default function AssignVolunteers() {
       } catch (err) {
         console.error(err);
         toast.error("Failed to load users");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -76,6 +80,7 @@ export default function AssignVolunteers() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
+        {isLoading && <Loader text="Users" />}
         {filteredUsers.map((user: any) => (
           <div
             key={user.user_id}
