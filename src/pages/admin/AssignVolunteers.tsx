@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
 import { Input } from "@components/ui/input";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -11,9 +10,9 @@ import {
 } from "@components/ui/dropdown-menu";
 
 export default function AssignVolunteers() {
-  const { user } = useUser();
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [refetch, setRefetch] = useState(true)
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function AssignVolunteers() {
     };
 
     fetchUsers();
-  }, []);
+  }, [refetch]);
 
   const filteredUsers = users
     .filter((user: any) => {
@@ -56,6 +55,7 @@ export default function AssignVolunteers() {
         user_id: userId,
       });
 
+      setRefetch((prev) => !prev)
       toast.success("Volunteer assigned successfully!");
       console.log("Assignment created:", response.data);
     } catch (error) {
@@ -110,11 +110,20 @@ export default function AssignVolunteers() {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
-                    {user.availability && user.availability.filter((a: any) => a.availability === "AVAILABLE").length != 0 ? (
+                    {user.availability &&
+                      user.availability.filter((a: any) =>
+                        a.availability === "AVAILABLE" &&
+                        a.event &&
+                        !user.assignments.some((assignment: any) => assignment.event?.event_id === a.event.event_id)
+                      ).length !== 0 ? (
                       user.availability
-                        .filter((a: any) => a.availability != "UNAVAILABLE"
-                          && a.event
-                          && !user.assignments.some((assignment: any) => assignment.event?.event_id === a.event.event_id))
+                        .filter((a: any) =>
+                          a.availability === "AVAILABLE" &&
+                          a.event &&
+                          !user.assignments.some(
+                            (assignment: any) => assignment.event?.event_id === a.event.event_id
+                          )
+                        )
                         .map((a: any) => (
                           <DropdownMenuItem
                             key={a.availability_id}
