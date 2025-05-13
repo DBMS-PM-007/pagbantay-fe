@@ -161,7 +161,7 @@ export default function Events() {
                   </p>
                 </div>
                 <button 
-                  onClick={() => navigate('/admin/events/edit')}
+                  onClick={() => navigate(`/admin/events/${selectedEvent.event_id}/edit`)}
                   className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                 >
                   <Pencil className="w-4 h-4" />
@@ -209,7 +209,7 @@ export default function Events() {
                       </p>
                     </div>
                     <button 
-                      onClick={() => navigate('/admin/events/edit')}
+                      onClick={() => navigate(`/admin/events/${event.event_id}/edit`)}
                       className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                     >
                       <Pencil className="w-4 h-4" />
