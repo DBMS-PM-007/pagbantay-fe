@@ -8,7 +8,7 @@ export default function Footer() {
   const navItems = [
     { label: "DASHBOARD", path: "/admin", Icon: Dashboard_Icon },
     { label: "EVENTS", path: "/admin/events", Icon: Events_Icon },
-    { label: "ASSIGN", path: "/admin/assignment", Icon: Assign_Icon },
+    { label: "ASSIGN", path: "/admin/assign-volunteers", Icon: Assign_Icon },
     { label: "EMERGENCY", path: "/admin/emergency", Icon: Emergency_Icon },
   ];
 

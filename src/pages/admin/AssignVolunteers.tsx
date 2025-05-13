@@ -37,9 +37,29 @@ export default function AssignVolunteers() {
     return fullName.includes(searchTerm.toLowerCase());
   });
 
-  const handleAssignToStation = (eventId: string, station: string) => {
-    console.log(`Assigned to event ${eventId} at station ${station}`);
+  const handleAssignToStation = async (
+    eventId: string,
+    userId: string,
+  ) => {
+    try {
+      console.log({
+        event_id: eventId,
+        user_id: userId,
+      });
+
+      const response = await axios.post(`${API_URL}/assignments`, {
+        event_id: eventId,
+        user_id: userId,
+      });
+
+      toast.success("Volunteer assigned successfully!");
+      console.log("Assignment created:", response.data);
+    } catch (error) {
+      console.error("Error assigning volunteer:", error);
+      toast.error("Failed to assign volunteer.");
+    }
   };
+
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
@@ -83,7 +103,7 @@ export default function AssignVolunteers() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="w-auto text-sm text-black border border-black px-4 py-2 rounded-[100px]">
-                      Assign to Station
+                      Assign to Event
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
@@ -93,7 +113,12 @@ export default function AssignVolunteers() {
                         .map((a: any) => (
                           <DropdownMenuItem
                             key={a.availability_id}
-                            onClick={() => handleAssignToStation(a.event.event_id, a.station_assignment)}
+                            onClick={() =>
+                              handleAssignToStation(
+                                a.event.event_id,
+                                user.user_id,
+                              )
+                            }
                           >
                             {a.event.event_name} - {a.event.location}
                           </DropdownMenuItem>
