@@ -41,7 +41,6 @@ export default function AssignVolunteers() {
       return nameA.localeCompare(nameB);
     });
 
-
   const handleAssignToStation = async (
     eventId: string,
     userId: string,
@@ -113,7 +112,9 @@ export default function AssignVolunteers() {
                   <DropdownMenuContent className="w-56">
                     {user.availability && user.availability.filter((a: any) => a.availability === "AVAILABLE").length != 0 ? (
                       user.availability
-                        .filter((a: any) => a.availability != "UNAVAILABLE" && a.event)
+                        .filter((a: any) => a.availability != "UNAVAILABLE"
+                          && a.event
+                          && !user.assignments.some((assignment: any) => assignment.event?.event_id === a.event.event_id))
                         .map((a: any) => (
                           <DropdownMenuItem
                             key={a.availability_id}
