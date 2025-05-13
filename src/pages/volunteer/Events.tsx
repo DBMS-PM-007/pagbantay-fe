@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { MapPin, Clock, FileText } from "lucide-react"
 import Header from "@/components/Header"
-import Footer from "@/components/Footer"
+import BottomNav from "@/components/BottomNav"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -102,13 +102,13 @@ export default function Events() {
   }
 
   return (
-    <div className="h-screen flex flex-col gap-[50px]">
-      <Header title="Events" />
+    <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
+      <Header title="Assign Volunteers" />
       {loading && <p>Loading events...</p>}
       {error && <p className="text-red-600">{error}</p>}
 
       {!loading && !error && (
-        <div className="flex flex-col gap-[20px]">
+        <div className="pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
           {events.map((event) => (
             <div
               key={event.event_id}
@@ -156,7 +156,7 @@ export default function Events() {
           ))}
         </div>
       )}
-      <Footer />
+      <BottomNav type="volunteer" />
     </div>
   )
 }
