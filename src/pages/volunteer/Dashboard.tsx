@@ -68,7 +68,23 @@ export default function Dashboard() {
             ) : error ? (
               <p className="text-[maroon] text-sm text-center">Error: {error}</p>
             ) : events.length === 0 ? (
-              <p className="text-gray-600 text-center">No events scheduled.</p>
+              <div className="w-full max-w-2xl mx-auto">
+                <div className="w-[350px] flex flex-col text-md text-black overflow-hidden font-semibold bg-[lightgray] border border-black rounded-lg text-left mx-auto shadow-md">
+                  <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
+                    <span className="text-md">Upcoming Events</span>
+                  </div>
+
+                  <div className="flex flex-col last:border-none px-[10px] pt-[10px] pb-[20px]">
+                    <p className="flex items-start gap-3">
+                      <CalendarClock className="w-5 h-5 flex-shrink-0" />
+                      <span className="text-sm whitespace-pre-line">
+                        {`No events scheduled.\nCome back soon!`}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+      
             ) : (
               <div className="w-full max-w-2xl mx-auto">
                 <div className="w-[350px] flex flex-col text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md">
