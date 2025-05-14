@@ -3,6 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 export default function CreateEvent() {
   const { user } = useUser();
@@ -12,6 +13,7 @@ export default function CreateEvent() {
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
 
   // For Start and End time conversion to match Backend
@@ -41,6 +43,7 @@ export default function CreateEvent() {
         description,
       });
       toast("Event created!");
+      navigate("/admin");
 
     } catch (err) {
       console.error(err);
