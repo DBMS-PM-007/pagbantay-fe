@@ -69,17 +69,6 @@ export default function AssignVolunteers() {
       return nameA.localeCompare(nameB);
     });
 
-  const availableEvents = users.filter((user: any) => {
-    user.availability.filter((a: any) =>
-      a.availability === "AVAILABLE" &&
-      a.event &&
-      !user.assignments.some(
-        (assignment: any) =>
-          assignment.event?.event_id === a.event.event_id
-      )
-    ) || [];
-  })
-
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
       <div className="w-[300px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
