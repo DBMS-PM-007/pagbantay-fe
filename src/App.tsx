@@ -31,7 +31,7 @@ export default function App() {
                 <Route path="/admin/assign-volunteers" element={<AssignVolunteers />} />
                 <Route path="/admin/events" element={<AdminEvents />} />
                 <Route path="/admin/events/create" element={<CreateEvent />} />
-                <Route path="/admin/events/edit" element={<EditEvent />} />
+                <Route path="/admin/events/:id/edit" element={<EditEvent />} />
                 <Route path="/admin/emergency" element={<Emergency />} />
               </Route>
             </Route>
