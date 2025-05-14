@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -8,15 +8,25 @@ export default function CreateEvent() {
   const { user } = useUser();
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const API_URL = import.meta.env.VITE_API_URL;
+
+  // For Start and End time conversion to match Backend
+  function toISOString(date: string, time: string): string {
+    const [hours, minutes] = time.split(":");
+    const dt = new Date(date);
+    dt.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    return dt.toISOString();
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) {
-      alert("User not logged in");
+      alert("User not logged in")
       return;
     }
 
@@ -25,10 +35,13 @@ export default function CreateEvent() {
         admin_id: "1",
         event_name: eventName,
         date: eventDate,
+        start_time: toISOString(eventDate, startTime),
+        end_time: toISOString(eventDate, endTime),
         location,
         description,
       });
       toast("Event created!");
+
     } catch (err) {
       console.error(err);
       toast.error("Failed to create event");
@@ -65,6 +78,28 @@ export default function CreateEvent() {
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
                 />
+              </div>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <h2>Start Time</h2>
+                  <Input
+                    required
+                    type="time"
+                    className="font-light text-sm"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
+                  <h2>End Time</h2>
+                  <Input
+                    required
+                    type="time"
+                    className="font-light text-sm"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                  />
+                </div>
               </div>
               <div>
                 <h2>Location</h2>
