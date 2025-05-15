@@ -28,7 +28,7 @@ export default function BottomNav({ type }: BottomNavProps) {
 
   return (
     <div className="fixed bottom-0 bg-white w-full flex flex-row justify-center border-t p-4 z-10">
-      <div className="w-[400px] justify-between flex flex-row items-center text-center text-[10px]">
+      <div className="w-[350px] justify-between flex flex-row items-center text-center text-[10px]">
         {(type == "admin" ? adminNavItems : volunteerNavItems).map(({ label, path, Icon }) => (
           <NavLink
             key={label}
