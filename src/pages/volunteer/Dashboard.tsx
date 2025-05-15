@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
 import { useNavigate } from "react-router-dom";
 import { CalendarClock, ChevronRight } from "lucide-react";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
@@ -57,11 +55,9 @@ export default function Dashboard() {
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
-  
+
       <SignedIn>
         <div className="min-h-screen w-full bg-white text-black flex flex-col">
-          <Header title="DASHBOARD" />
-  
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-32 mt-4">
             {loading ? (
               <p className="text-gray-500 text-sm text-center">Loading...</p>
@@ -84,14 +80,14 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-      
+
             ) : (
               <div className="w-full max-w-2xl mx-auto">
                 <div className="w-[350px] flex flex-col text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md">
                   <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                     <span className="text-md">Upcoming Events</span>
                   </div>
-  
+
                   <div className="flex flex-col justify-center px-[10px] pt-[10px] pb-[20px] gap-4">
                     {events.map((event) => (
                       <div key={event.event_id} className="flex flex-col last:border-none pb-2">
@@ -104,7 +100,7 @@ export default function Dashboard() {
                         </p>
                         <div className="flex items-center justify-between ml-8">
                           <span className="text-xs break-words font-normal">{event.location}</span>
-                          <button 
+                          <button
                             onClick={() => navigate('/volunteer/events')}
                             className="text-black"
                           >
@@ -118,12 +114,10 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-  
-          <Footer />
         </div>
       </SignedIn>
     </>
-  );  
+  );
 }
 
 
