@@ -75,7 +75,6 @@ export default function Events() {
 
   const handleAvailabilityChange = async (eventId: string, status: string) => {
     try {
-      alert(selectedStatus[eventId])
       const method = selectedStatus[eventId] ? "put" : "post"
       const url = method === "put"
         ? `${API_URL}/availability/${eventId}?user_id=${userId}`
