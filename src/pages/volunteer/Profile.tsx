@@ -1,6 +1,11 @@
+import { UserButton } from "@clerk/clerk-react";
+
 export default function VolunteerProfile() {
   return (
-    <div>Volunteer Profile</div>
+    <div className="flex flex-col items-center">
+      Volunteer Profile
+      <UserButton />
+    </div>
   )
 }
 

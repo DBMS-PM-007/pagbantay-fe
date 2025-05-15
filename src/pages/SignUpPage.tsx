@@ -94,7 +94,7 @@ export default function SignUpPage() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="w-screen h-screen text-center items-center flex flex-col space-y-4 bg-white text-black">
+    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black">
       <Header title="SIGN UP" />
       {!submitted ? (
         <div className="w-[300px] flex flex-col gap-[20px]">
