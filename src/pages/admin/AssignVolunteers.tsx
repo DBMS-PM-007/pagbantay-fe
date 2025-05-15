@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
 } from "@components/ui/dropdown-menu";
 import Loader from "@components/Loader"
-import { User, Mail, ClipboardList } from "lucide-react"
+import { User, Mail, ClipboardList, Search } from "lucide-react"
 
 export default function AssignVolunteers() {
   const [users, setUsers] = useState([]);
@@ -71,15 +71,19 @@ export default function AssignVolunteers() {
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-      <div className="w-[300px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
-        <Input
-          className="h-[50px] rounded-[100px] border-black pl-[20px] pr-[20px]"
-          type="text"
-          placeholder="⌕ Search Volunteer..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-
+      <div className="w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
+        <div className="relative w-full max-w-md mx-auto">
+          <Input
+            className="h-[50px] rounded-[100px] border-black pl-[40px] pr-[20px]"
+            type="text"
+            placeholder="Search Volunteer..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <Search className="w-4 h-4" />
+          </span>
+        </div>
         {isLoading ? (
           <Loader text="Users" />
         ) : filteredUsers.length === 0 ? (
@@ -88,11 +92,11 @@ export default function AssignVolunteers() {
           filteredUsers.map((user: any) => (
             <div
               key={user.user_id}
-              className="w-full flex flex-col h-auto text-sm text-black overflow-hidden font-bold bg-white border border-black rounded-lg text-left shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]"
+              className="w-full flex flex-col h-auto text-xs text-black overflow-hidden font-bold bg-white border border-black rounded-lg text-left shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]"
             >
               <div className="w-full flex flex-row h-[50px] justify-left items-center text-sm gap-[10px] pl-[15px] pr-[15px] pt-[10px] pb-[5px] text-white font-bold bg-[maroon] border border-black">
                 <User />
-                <h2 className="font-semibold">{user.first_name} {user.last_name}</h2>
+                <h2 className="text-lg font-semibold">{user.first_name} {user.last_name}</h2>
               </div>
               <div className="flex flex-col gap-3 p-5 font-semibold">
                 <div>
