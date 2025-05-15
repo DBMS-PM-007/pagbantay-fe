@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -116,21 +115,6 @@ export default function Events() {
             <Loader text="Events" />
           ) : error ? (
             <p className="text-[maroon] text-xs font-semibold text-center">Error: {error}</p>
-          ) : events.length === 0 ? (
-            <div className="w-full flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
-
-              <div className="w-full flex items-center gap-2 h-auto px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
-                <span className="text-lg truncate">Scheduled Events</span>
-              </div>
-
-              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[10px] text-xs font-semibold gap-[10px]">
-                <p className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>No Scheduled Events Yet.</span>
-                </p>
-              </div>
-            </div>
-
           ) : selectedEvent ? (
             <div className="w-full relative flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
 
