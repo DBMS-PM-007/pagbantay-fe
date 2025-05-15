@@ -11,6 +11,8 @@ import {
   Plus,
 } from "lucide-react";
 import axios from "axios";
+import Loader from "@/components/Loader";
+import { Input } from "@/components/ui/input";
 
 interface Event {
   event_id: string;
@@ -69,7 +71,7 @@ export default function Events() {
       <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
         <div className="relative w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
           <div className="relative w-full max-w-md mx-auto">
-            <input
+            <Input
               type="text"
               placeholder="Search event name..."
               value={searchQuery}
@@ -85,14 +87,14 @@ export default function Events() {
                   setSelectedEvent(null);
                 }
               }}
-              className="w-full p-3 rounded-full border shadow-md border-black-500 bg-white text-sm focus:outline-none pl-10 pr-8"
+              className="h-[50px] rounded-[100px] border-black pl-[40px] pr-[20px]"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <Search className="w-4 h-4" />
             </span>
 
             {searchQuery.length > 0 && filteredEvents.length > 0 && showSuggestions && (
-              <ul className="absolute left-1/2 transform -translate-x-1/2 w-[90%] pointed-lg border border-black-500 bg-white text-sm shadow-md divide-y divide-black-500 z-10">
+              <ul className="absolute left-1/2 transform -translate-x-1/2 w-[90%] pointed-lg border border-black-500 bg-white text-xs font-semibold shadow-md divide-y divide-black-500 z-10">
                 {filteredEvents.slice(0, 5).map((event) => (
                   <li
                     key={event.event_id}
@@ -111,17 +113,17 @@ export default function Events() {
           </div>
 
           {loading ? (
-            <p className="text-gray-500 text-sm text-center">Loading...</p>
+            <Loader text="Events" />
           ) : error ? (
-            <p className="text-[maroon] text-sm text-center">Error: {error}</p>
+            <p className="text-[maroon] text-xs font-semibold text-center">Error: {error}</p>
           ) : events.length === 0 ? (
-            <div className="w-full flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
+            <div className="w-full flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
 
-              <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
-                <span className="text-md truncate">Scheduled Events</span>
+              <div className="w-full flex items-center gap-2 h-auto px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
+                <span className="text-lg truncate">Scheduled Events</span>
               </div>
 
-              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[10px] text-sm gap-[10px]">
+              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[10px] text-xs font-semibold gap-[10px]">
                 <p className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <span>No Scheduled Events Yet.</span>
@@ -130,14 +132,14 @@ export default function Events() {
             </div>
 
           ) : selectedEvent ? (
-            <div className="w-full relative flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
+            <div className="w-full relative flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
 
-              <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
+              <div className="w-full flex items-center gap-2 h-auto px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                 <Calendar className="w-5 h-5" />
-                <span className="text-md truncate">{selectedEvent.event_name}</span>
+                <span className="text-lg truncate">{selectedEvent.event_name}</span>
               </div>
 
-              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[60px] text-sm gap-[15px]">
+              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[60px] text-xs font-semibold gap-[15px]">
                 <p className="flex items-start gap-2">
                   <Clock className="w-4 h-4 flex-shrink-0 mt-1" />
                   <span className="break-words">{selectedEvent.date}</span>
@@ -161,13 +163,13 @@ export default function Events() {
             </div>
 
           ) : filteredEvents.length === 0 ? (
-            <div className="w-full flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
+            <div className="w-full flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
 
-              <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
-                <span className="text-md truncate">Scheduled Events</span>
+              <div className="w-full flex items-center gap-2 h-auto px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg  pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
+                <span className="text-lg truncate">Scheduled Events</span>
               </div>
 
-              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[10px] text-sm gap-[10px]">
+              <div className="flex flex-col justify-center pl-[50px] pr-[50px] pt-[20px] pb-[10px] text-xs font-semibold gap-[10px]">
                 <p className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <span>Event Not Found.</span>
@@ -178,14 +180,14 @@ export default function Events() {
           ) : (
             <div className="w-full max-w-2xl space-y-6 mx-auto">
               {filteredEvents.map((event) => (
-                <div key={event.event_id} className="w-full relative flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
+                <div key={event.event_id} className="w-full relative flex flex-col h-auto text-lg text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
 
-                  <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
+                  <div className="w-full flex items-center gap-2 h-auto px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg  pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
                     <Calendar className="w-5 h-5" />
-                    <span className="text-md truncate">{event.event_name}</span>
+                    <span className="text-lg truncate">{event.event_name}</span>
                   </div>
 
-                  <div className="flex flex-col justify-center pl-[25px] pr-[25px] pt-[20px] pb-[60px] text-sm gap-[10px]">
+                  <div className="flex flex-col justify-center pl-[25px] pr-[25px] pt-[20px] pb-[60px] text-xs font-semibold gap-[10px]">
                     <p className="flex items-start gap-2">
                       <Clock className="w-4 h-4 flex-shrink-0 mt-1" />
                       <span className="break-words">{event.date}</span>
@@ -210,7 +212,7 @@ export default function Events() {
               ))}
             </div>
           )}
-          <div className="flex flex-col items-center" >
+          {!loading && <div className="flex flex-col items-center" >
             <button
               onClick={() => navigate('/admin/events/create')}
               className="flex items-center justify-center gap-2 px-2 py-2 bg-[maroon] text-white rounded-full shadow hover:bg-[maroon]/90 transition cursor-pointer"
@@ -223,7 +225,7 @@ export default function Events() {
             >
               Add an Event
             </span>
-          </div>
+          </div>}
         </div>
       </div>
     </>
