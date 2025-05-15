@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar, MapPin, ClipboardList, Save, Loader } from 'lucide-react';
 import axios from "axios";
@@ -40,7 +38,7 @@ export default function EditEvent() {
             "Content-Type": "application/json",
           },
         });
-        
+
         console.log("Fetched event:", response.data);
         setEvent(response.data);
       } catch (err: any) {
@@ -64,7 +62,7 @@ export default function EditEvent() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!event || !eventId) return;
-    
+
     setSaving(true);
     setError("");
     setSuccessMessage("");
@@ -84,11 +82,11 @@ export default function EditEvent() {
           "Content-Type": "application/json",
         },
       });
-      
+
       console.log("Update response:", response.data);
-      
+
       setSuccessMessage("Event updated successfully!");
-      
+
       setTimeout(() => {
         navigate("/admin/events");
       }, 2000);
@@ -109,8 +107,6 @@ export default function EditEvent() {
 
       <SignedIn>
         <div className="min-h-screen w-full bg-white text-black flex flex-col">
-          <Header title="EDIT EVENT" />
-          
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-16">
             {loading ? (
               <div className="flex justify-center items-center h-40">
@@ -120,7 +116,7 @@ export default function EditEvent() {
             ) : error ? (
               <div className="w-[350px] mx-auto p-4 bg-red-50 border border-red-200 rounded-lg text-center mt-4">
                 <p className="text-[maroon] font-medium">{error}</p>
-                <button 
+                <button
                   onClick={() => navigate("/admin/events")}
                   className="mt-4 px-4 py-2 bg-[maroon] text-white rounded-md hover:bg-[maroon]/90"
                 >
@@ -161,7 +157,7 @@ export default function EditEvent() {
                           type="date"
                           id="date"
                           name="date"
-                          value={event.date.split('T')[0]} 
+                          value={event.date.split('T')[0]}
                           onChange={handleChange}
                           required
                           className="w-full p-2 border border-gray-400 rounded-md"
@@ -203,13 +199,13 @@ export default function EditEvent() {
                         />
                       </div>
                     </div>
-                    
+
                     {successMessage && (
                       <div className="bg-green-50 border border-green-200 text-green-700 p-2 rounded-md text-center">
                         {successMessage}
                       </div>
                     )}
-                    
+
                     {error && (
                       <div className="bg-red-50 border border-red-200 text-[maroon] p-2 rounded-md text-center">
                         {error}
@@ -248,7 +244,7 @@ export default function EditEvent() {
             ) : (
               <div className="w-[350px] mx-auto p-4 bg-red-50 border border-red-200 rounded-lg text-center mt-4">
                 <p className="text-[maroon] font-medium">Event not found</p>
-                <button 
+                <button
                   onClick={() => navigate("/admin/events")}
                   className="mt-4 px-4 py-2 bg-[maroon] text-white rounded-md hover:bg-[maroon]/90"
                 >
@@ -257,8 +253,6 @@ export default function EditEvent() {
               </div>
             )}
           </div>
-          
-          <Footer />
         </div>
       </SignedIn>
     </>

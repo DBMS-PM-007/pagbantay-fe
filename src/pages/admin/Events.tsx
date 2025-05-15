@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
 import { useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -71,12 +69,11 @@ export default function Events() {
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
-  
+
       <SignedIn>
         <div className="min-h-screen w-full bg-white text-black flex flex-col">
-          <Header title="MANAGE EVENTS" />
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-10 pb-32">
-            
+
             <div className="relative w-full max-w-md mb-10 mt-4 mx-auto">
               <input
                 type="text"
@@ -99,7 +96,7 @@ export default function Events() {
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <Search className="w-4 h-4" />
               </span>
-  
+
               {searchQuery.length > 0 && filteredEvents.length > 0 && showSuggestions && (
                 <ul className="absolute left-1/2 transform -translate-x-1/2 w-[90%] pointed-lg border border-black-500 bg-white text-sm shadow-md divide-y divide-black-500 z-10">
                   {filteredEvents.slice(0, 5).map((event) => (
@@ -118,14 +115,14 @@ export default function Events() {
                 </ul>
               )}
             </div>
-            
+
             {loading ? (
               <p className="text-gray-500 text-sm text-center">Loading...</p>
             ) : error ? (
               <p className="text-[maroon] text-sm text-center">Error: {error}</p>
             ) : events.length === 0 ? (
               <div className="w-[350px] flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
-                
+
                 <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                   <span className="text-md truncate">Scheduled Events</span>
                 </div>
@@ -140,7 +137,7 @@ export default function Events() {
 
             ) : selectedEvent ? (
               <div className="w-[350px] relative flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
-  
+
                 <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                   <Calendar className="w-5 h-5" />
                   <span className="text-md truncate">{selectedEvent.event_name}</span>
@@ -160,7 +157,7 @@ export default function Events() {
                     <span className="break-words">{selectedEvent.description}</span>
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={() => navigate(`/admin/events/${selectedEvent.event_id}/edit`)}
                   className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                 >
@@ -171,7 +168,7 @@ export default function Events() {
 
             ) : filteredEvents.length === 0 ? (
               <div className="w-[350px] flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
-                
+
                 <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                   <span className="text-md truncate">Scheduled Events</span>
                 </div>
@@ -188,7 +185,7 @@ export default function Events() {
               <div className="w-full max-w-2xl space-y-6 mx-auto">
                 {filteredEvents.map((event) => (
                   <div key={event.event_id} className="w-[350px] relative flex flex-col h-auto text-md text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
-                    
+
                     <div className="w-full flex items-center gap-2 h-[40px] px-4 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
                       <Calendar className="w-5 h-5" />
                       <span className="text-md truncate">{event.event_name}</span>
@@ -208,7 +205,7 @@ export default function Events() {
                         <span className="break-words">{event.description}</span>
                       </p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => navigate(`/admin/events/${event.event_id}/edit`)}
                       className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
                     >
@@ -218,8 +215,8 @@ export default function Events() {
                   </div>
                 ))}
               </div>
-            )}            
-          </div>  
+            )}
+          </div>
           <div className="w-full max-w-5xl mb-2 mx-auto px-4 sm:px-10 mt-8 flex justify-end">
             <div className="flex flex-col items-center">
               <button
@@ -228,15 +225,14 @@ export default function Events() {
               >
                 <Plus className="w-4 h-4" />
               </button>
-                <span 
-                  onClick={() => navigate('/admin/events/create')}
-                  className="mt-1 text-[maroon] text-xs font-semibold cursor-pointer"
-                >
-                  Add an Event
-                </span>
+              <span
+                onClick={() => navigate('/admin/events/create')}
+                className="mt-1 text-[maroon] text-xs font-semibold cursor-pointer"
+              >
+                Add an Event
+              </span>
             </div>
           </div>
-          <Footer />
         </div>
       </SignedIn>
     </>
