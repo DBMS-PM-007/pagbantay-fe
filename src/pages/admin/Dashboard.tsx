@@ -1,9 +1,18 @@
+<<<<<<< HEAD
+=======
+"use client"
+
+>>>>>>> 036ca6e160ab029192e393df26f0b954a86e84eb
 import { useEffect, useState } from "react"
 import { SignedIn } from "@clerk/clerk-react"
 import { useNavigate } from "react-router-dom"
 import { Users, Calendar, MapPin, Clock, ClipboardList, ChevronRight } from "lucide-react"
 import axios from "axios"
 
+<<<<<<< HEAD
+=======
+// Types based on your API
+>>>>>>> 036ca6e160ab029192e393df26f0b954a86e84eb
 interface Volunteer {
   user_id: string
   first_name: string
