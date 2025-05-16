@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar, MapPin, ClipboardList, Save, Loader } from 'lucide-react';
 import axios from "axios";
