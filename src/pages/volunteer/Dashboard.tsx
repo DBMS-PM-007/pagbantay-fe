@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CalendarClock, ChevronRight } from "lucide-react";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 
 interface Event {
   event_id: string;
