@@ -200,7 +200,7 @@ export default function Events() {
                   </div>
                   <button
                     onClick={() => navigate(`/admin/events/${event.event_id}/edit`)}
-                    className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
+                    className="absolute bottom-3 right-3 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer"
                   >
                     <Pencil className="w-4 h-4" />
                     <span>Edit</span>
@@ -210,7 +210,7 @@ export default function Events() {
                       setEventToDelete(event.event_id);
                       setIsModalOpen(true);
                     }}
-                    className="absolute bottom-3 right-24 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition"
+                    className="absolute bottom-3 right-24 flex items-center gap-1 bg-[maroon] text-white px-3 py-1 rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer"
                   >
                     <Pencil className="w-4 h-4" />
                     <span>Delete</span>
@@ -257,13 +257,13 @@ export default function Events() {
         <div className="text-sm font-semibold flex justify-end gap-3">
           <button
             onClick={cancelDelete}
-            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
+            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={confirmDelete}
-            className="bg-[maroon] text-white px-4 py-2 rounded hover:bg-[maroon]/90 transition"
+            className="bg-[maroon] text-white px-4 py-2 rounded hover:bg-[maroon]/90 transition cursor-pointer"
           >
             Delete
           </button>
