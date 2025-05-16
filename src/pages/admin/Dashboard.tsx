@@ -51,12 +51,11 @@ export default function Dashboard() {
   const fetchData = async () => {
     setLoading(true)
     try {
-      // Fetch volunteers with timeout
       const volunteersResponse = await axios.get(`${API_URL}/users`, {
         headers: {
           "Content-Type": "application/json",
         },
-        timeout: 10000, // 10 second timeout
+        timeout: 10000, 
       })
 
       if (volunteersResponse.data) {
@@ -65,28 +64,26 @@ export default function Dashboard() {
         setTotalVolunteers(volunteersResponse.data.length)
       }
 
-      // Fetch events with timeout and force no-cache
       const eventsResponse = await axios.get(`${API_URL}/events`, {
         headers: {
           "Content-Type": "application/json",
           "Cache-Control": "no-cache",
           Pragma: "no-cache",
         },
-        timeout: 10000, // 10 second timeout
+        timeout: 10000, 
         params: {
-          _t: new Date().getTime(), // Cache busting
+          _t: new Date().getTime(), 
         },
       })
 
       if (eventsResponse.data) {
         console.log("Events data:", eventsResponse.data)
 
-        // Process events data
         const processedEvents = eventsResponse.data.map((event: Event) => ({
           ...event,
           event_name: event.name || event.event_name || "Unnamed Event",
-          status: event.status || "upcoming", // Default to upcoming if status is missing
-          date: event.date || new Date().toISOString().split("T")[0], // Default to today if date is missing
+          status: event.status || "upcoming", 
+          date: event.date || new Date().toISOString().split("T")[0], 
           location: event.location || "Location not specified",
           description: event.description || "No description available",
         }))
@@ -94,43 +91,36 @@ export default function Dashboard() {
         setEvents(processedEvents)
         setTotalEvents(processedEvents.length)
 
-        // Find upcoming events
         const upcomingEvents = processedEvents.filter((event: Event) => event.status === "upcoming" || !event.status)
 
         console.log("Upcoming events sorted:", upcomingEvents)
 
-        // Find the "Testing Admin Dashboard" event specifically
         const testingEvent = upcomingEvents.find((event: Event) => event.event_name === "Testing Admin Dashboard")
 
         if (testingEvent) {
-          // If we found the specific event, use it
           setUpcomingEvent(testingEvent)
           console.log("Selected specific event:", testingEvent)
 
-          // Calculate days remaining
           if (testingEvent.date) {
             const eventDate = new Date(testingEvent.date)
             const today = new Date()
-            today.setHours(0, 0, 0, 0) // Reset time to start of day
+            today.setHours(0, 0, 0, 0) 
 
             const timeDiff = eventDate.getTime() - today.getTime()
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
             setDaysRemaining(daysDiff)
           }
         } else if (upcomingEvents.length > 0) {
-          // If specific event not found, try to get the newest event by event_id
-          // Sort by event_id (assuming UUIDs where later ones are lexicographically greater)
           const sortedByNewest = [...upcomingEvents].sort((a: Event, b: Event) => b.event_id.localeCompare(a.event_id))
 
           const nextEvent = sortedByNewest[0]
           setUpcomingEvent(nextEvent)
           console.log("Selected newest event by ID:", nextEvent)
 
-          // Calculate days remaining
           if (nextEvent.date) {
             const eventDate = new Date(nextEvent.date)
             const today = new Date()
-            today.setHours(0, 0, 0, 0) // Reset time to start of day
+            today.setHours(0, 0, 0, 0) 
 
             const timeDiff = eventDate.getTime() - today.getTime()
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
@@ -161,7 +151,6 @@ export default function Dashboard() {
             </div>
           ) : (
             <>
-              {/* Volunteers Card */}
               <div
                 onClick={() => navigate("/admin/assign-volunteers")}
                 className="w-full relative flex flex-col h-auto text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-center mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
@@ -173,7 +162,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Events Card */}
               <div
                 onClick={() => navigate("/admin/events")}
                 className="w-full relative flex flex-col h-auto text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-center mx-auto shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
@@ -185,10 +173,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Upcoming Event Section Title - Centered */}
               <h3 className="font-bold text-lg text-center">Upcoming Event</h3>
 
-              {/* Upcoming Event Card */}
               {upcomingEvent ? (
                 <div className="w-full relative flex flex-col h-auto text-black overflow-hidden font-semibold bg-white border border-black rounded-lg text-left mx-auto shadow-md hover:shadow-xl transition-all duration-300">
                   <div className="w-full flex items-center gap-2 h-auto px-4 py-3 text-white font-bold bg-[maroon] border-b border-black rounded-t-lg">
