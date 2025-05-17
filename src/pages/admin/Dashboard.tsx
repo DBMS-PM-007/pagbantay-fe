@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { SignedIn } from "@clerk/clerk-react"
 import { useNavigate } from "react-router-dom"
 import { Users, Calendar, MapPin, Clock, ClipboardList, ChevronRight } from "lucide-react"
 import axios from "axios"
@@ -135,7 +134,7 @@ export default function Dashboard() {
   }
 
   return (
-    <SignedIn>
+    <>
       <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
         <div className="relative w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px] overflow-y-auto">
           {loading ? (
@@ -222,6 +221,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-    </SignedIn>
+    </>
   )
 }
