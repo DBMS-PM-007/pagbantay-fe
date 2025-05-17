@@ -3,16 +3,6 @@ import { useNavigate } from "react-router-dom"
 import { Users, Calendar, MapPin, Clock, ClipboardList, ChevronRight } from "lucide-react"
 import axios from "axios"
 
-interface Volunteer {
-  user_id: string
-  first_name: string
-  last_name?: string
-  role?: string
-  event_id?: string
-  station?: string
-  status?: "pending" | "approved" | "denied"
-}
-
 interface Event {
   event_id: string
   admin_id: string
@@ -28,9 +18,7 @@ interface Event {
 }
 
 export default function Dashboard() {
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([])
   const [totalVolunteers, setTotalVolunteers] = useState(0)
-  const [events, setEvents] = useState<Event[]>([])
   const [totalEvents, setTotalEvents] = useState(0)
   const [upcomingEvent, setUpcomingEvent] = useState<Event | null>(null)
   const [daysRemaining, setDaysRemaining] = useState<number | null>(null)
@@ -56,7 +44,6 @@ export default function Dashboard() {
 
       if (volunteersResponse.data) {
         console.log("Volunteers data:", volunteersResponse.data)
-        setVolunteers(volunteersResponse.data)
         setTotalVolunteers(volunteersResponse.data.length)
       }
 
@@ -84,7 +71,6 @@ export default function Dashboard() {
           description: event.description || "No description available",
         }))
 
-        setEvents(processedEvents)
         setTotalEvents(processedEvents.length)
 
         const upcomingEvents = processedEvents.filter((event: Event) => event.status === "upcoming" || !event.status)
