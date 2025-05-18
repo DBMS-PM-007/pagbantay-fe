@@ -1,8 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
-import InputField from "@components/InputField";
-import Header from "@components/Header";
+import InputField from "@components/InputField"
 import axios from "axios";
 
 export default function SignUpPage() {
@@ -95,7 +94,6 @@ export default function SignUpPage() {
 
   return (
     <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black">
-      <Header title="SIGN UP" />
       {!submitted ? (
         <div className="w-[300px] flex flex-col gap-[20px]">
           <form onSubmit={handleSubmit} className="w-full flex flex-col justify-center gap-2">

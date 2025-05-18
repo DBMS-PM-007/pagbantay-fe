@@ -2,7 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import BottomNav from "./BottomNav";
 
-export default function AppLayout({ type }: { type: "admin" | "volunteer" }) {
+export default function AppLayout({ type }: { type: "admin" | "volunteer" | "auth"}) {
   const location = useLocation();
 
   const getTitle = () => {
@@ -22,6 +22,11 @@ export default function AppLayout({ type }: { type: "admin" | "volunteer" }) {
       if (path.startsWith("/volunteer/events")) return "Events";
       if (path.startsWith("/volunteer/profile")) return "Profile";
       if (path.startsWith("/volunteer/guide")) return "First Aid Guide";
+    }
+
+    if (type === "auth") {
+      if (path.startsWith("/sign-in")) return "SIGN-IN";
+      if (path.startsWith("/sign-up")) return "SIGN-UP";
     }
 
     return "";

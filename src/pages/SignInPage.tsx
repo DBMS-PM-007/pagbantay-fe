@@ -2,7 +2,6 @@ import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignIn } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "@components/InputField";
-import Header from "@components/Header";
 import PagbantayLogo from "@assets/pagbantay_logo.png";
 
 export default function SignInPage() {
@@ -45,8 +44,7 @@ export default function SignInPage() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black">
-      <Header title="SIGN IN" />
+    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black"> 
       {!submitted ? (
         <div className="w-[300px] flex flex-col gap-[20px]">
           <img src={PagbantayLogo} />
