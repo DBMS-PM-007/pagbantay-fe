@@ -47,9 +47,11 @@ export default function App() {
 
           {/* Public routes */}
           <Route element={<LoggedIn />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route element={<AppLayout type="auth" />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -8,7 +8,7 @@ import Guide_Icon from "@assets/navbar/volunteer/Guide_Icon.svg?react";
 import Profile_Icon from "@assets/navbar/volunteer/Profile_Icon.svg?react";
 
 type BottomNavProps = {
-  type: "admin" | "volunteer";
+  type: "admin" | "volunteer" | "auth";
 }
 
 export default function BottomNav({ type }: BottomNavProps) {
@@ -27,7 +27,7 @@ export default function BottomNav({ type }: BottomNavProps) {
   ];
 
   return (
-    <div className="fixed bottom-0 bg-white w-full flex flex-row justify-center border-t p-4 z-10">
+    type != "auth" && <div className="fixed bottom-0 bg-white w-full flex flex-row justify-center border-t p-4 z-10">
       <div className="w-[350px] justify-between flex flex-row items-center text-center text-[10px]">
         {(type == "admin" ? adminNavItems : volunteerNavItems).map(({ label, path, Icon }) => (
           <NavLink
