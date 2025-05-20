@@ -1,8 +1,8 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
-import Header from "../components/Header";
+import InputField from "@components/InputField"
+import axios from "axios";
 
 export default function SignUpPage() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -13,8 +13,23 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL
+
+  const registerVolunteer = async (data: any) => {
+    try {
+      const response = await axios.post(`${API_URL}/users`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Volunteer registration successful:", response.data);
+    } catch (error: any) {
+      console.error("Volunteer registration error:", error);
+      const message = error.response?.data?.detail || "Failed to register volunteer";
+      throw new Error(message);
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,7 +43,6 @@ export default function SignUpPage() {
         password: password,
         firstName: firstName,
         lastName: lastName,
-        phoneNumber: contact,
       });
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
@@ -46,12 +60,29 @@ export default function SignUpPage() {
       }
 
       const sessionId = signUp.createdSessionId;
-      // Uncomment Below for Debugging
       console.log("Session Id:", sessionId);
       console.log("Sign-up status:", signUp.status);
       console.log("Missing fields:", signUp?.missingFields);
 
       await setActive({ session: sessionId });
+
+      const volunteerData = {
+        first_name: firstName,
+        last_name: lastName,
+        is_admin: false,
+        contact_info: contact,
+        status: null,
+        email: email
+      };
+
+      try {
+        await registerVolunteer(volunteerData);
+      } catch (apiErr: any) {
+        console.error("API registration failed:", apiErr);
+        setError("Failed to register user to the system. Please try again.");
+        return;
+      }
+
       setSubmitted(true);
     } catch (err: any) {
       console.error("Sign-up error:", err);
@@ -62,8 +93,7 @@ export default function SignUpPage() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="w-screen h-screen text-center items-center flex flex-col space-y-4 bg-white text-black">
-      <Header title="SIGN UP" />
+    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black">
       {!submitted ? (
         <div className="w-[300px] flex flex-col gap-[20px]">
           <form onSubmit={handleSubmit} className="w-full flex flex-col justify-center gap-2">
@@ -124,9 +154,8 @@ export default function SignUpPage() {
         </div>
       ) : (
         <Navigate to="./volunteer" />
-      )
-      }
+      )}
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </div >
+    </div>
   );
 }
