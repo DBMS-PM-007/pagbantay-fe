@@ -3,22 +3,21 @@ import { useSignIn } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "@components/InputField";
 import PagbantayLogo from "@assets/pagbantay_logo.png";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
 
   const navigate = useNavigate()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
 
     if (!signIn) {
-      setError("Sign-in component not ready");
+      toast.error("Sign-in component not ready");
       return;
     }
 
@@ -30,21 +29,22 @@ export default function SignInPage() {
 
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
+        toast.success("Successfully signed-in!");
         setSubmitted(true);
       } else {
         console.warn("Unexpected sign-in status:", result.status);
-        setError("Unexpected sign-in status");
+        toast.error("Unexpected sign-in status");
       }
     } catch (err: any) {
       console.error("Sign-in error:", err);
-      setError("Sign-in failed.");
+      toast.error("Invalid Email or Password");
     }
   };
 
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black"> 
+    <div className="w-screen h-screen text-center justify-center items-center flex flex-col space-y-4 bg-white text-black">
       {!submitted ? (
         <div className="w-[300px] flex flex-col gap-[20px]">
           <img src={PagbantayLogo} />
@@ -81,7 +81,6 @@ export default function SignInPage() {
       ) : (
         <Navigate to="./volunteer" />
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
