@@ -17,11 +17,13 @@ import VolunteerProfile from "@pages/volunteer/Profile";
 import FirstAidGuide from "@pages/volunteer/FirstAidGuide";
 import { ToastContainer } from "react-toastify";
 import AppLayout from "@components/AppLayout";
+import RedirectTrailingSlash from "@components/RedirectTrailingSlash"
 
 export default function App() {
   return (
     <>
       <BrowserRouter>
+        <RedirectTrailingSlash />
         <Routes>
           <Route element={<RequireAuth />}>
             <Route element={<RequireAdmin />}>
