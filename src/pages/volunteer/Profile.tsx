@@ -36,13 +36,22 @@ export default function ProfilePage() {
     fetchVolunteerData();
   }, [API_URL, user]);
 
+  const filteredAssignments =
+    volunteerData?.assignments.filter((assignment) =>
+      volunteerData.availability.some(
+        (a) =>
+          a.event_id === assignment.event_id &&
+          a.availability === "AVAILABLE"
+      )
+    ) || [];
+
   if (!user) return <div>Loading user...</div>;
   if (isLoading) return <div>Loading profile...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="p-6">
-      <div className="w-full bg-white rounded-lg shadow-md border border-black overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
+      <div className="w-[350px] bg-white rounded-lg shadow-md border border-black overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]">
         <div className="flex flex-col justify-center items-center bg-[maroon] text-white pl-[15px] pr-[15px] pt-[10px] pb-[10px]">
           <img
             src={user.imageUrl}
@@ -56,9 +65,9 @@ export default function ProfilePage() {
           <div className="w-full">
             <h2 className="font-semibold text-md mb-2">Assigned Events</h2>
             <ul className="list-disc pl-5 text-sm text-gray-700">
-              {volunteerData?.assignments.length ? (
+              {filteredAssignments.length ? (
                 <ul className="list-disc pl-5 text-sm text-gray-700">
-                  {volunteerData.assignments.map(({ assignment_id, event }) => (
+                  {filteredAssignments.map(({ assignment_id, event }) => (
                     <li key={assignment_id}>
                       {event.event_name} — {new Date(event.date).toLocaleDateString()}
                     </li>
