@@ -89,7 +89,7 @@ export default function Events() {
   return (
     <>
       <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-        <div className="relative w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
+        <div className="relative w-[350px] pt-[100px] pb-[100px] flex flex-col flex-start gap-[20px]">
           <div className="relative w-full max-w-md mx-auto">
             <Input
               type="text"

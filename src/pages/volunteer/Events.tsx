@@ -100,7 +100,7 @@ export default function Events() {
 
   return (
     <div className="w-screen h-screen text-center flex-start items-center flex flex-col bg-white text-black text-xs">
-      <div className="w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
+      <div className="w-[350px] pt-[100px] pb-[100px] flex flex-col flex-start gap-[20px]">
         {isLoading ? <Loader text="Events" /> :
           error ? <p className="text-red-600">{error}</p> :
             events.map((event) => (
