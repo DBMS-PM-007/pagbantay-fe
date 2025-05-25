@@ -131,7 +131,7 @@ export default function Events() {
                   <div className="flex w-full">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="ml-auto bg-[maroon] text-white px-4 py-2 rounded border border-black font-semibold">
+                        <button className="ml-auto bg-[maroon] text-white px-4 py-2 rounded border border-black font-semibold hover:cursor-pointer">
                           {selectedStatus[event.event_id] || "Mark Availability"}
                         </button>
                       </DropdownMenuTrigger>

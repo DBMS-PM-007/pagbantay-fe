@@ -96,7 +96,7 @@ export default function Dashboard() {
                         <span className="text-xs break-words font-normal">{event.location}</span>
                         <button
                           onClick={() => navigate('/volunteer/events')}
-                          className="text-black"
+                          className="text-black hover:cursor-pointer"
                         >
                           <ChevronRight className="w-5 h-5" />
                         </button>
