@@ -61,7 +61,7 @@ export default function ProfilePage() {
           <p className="font-semibold text-lg">{user.fullName}</p>
           <p className="text-white text-sm">{user.primaryEmailAddress?.emailAddress}</p>
         </div>
-        <div className="flex flex-col items-right pl-[15px] pr-[15px] pt-[10px] pb-[10px]">
+        <div className="flex flex-col items-right pl-[15px] pr-[15px] pt-[30px] pb-[20px]">
           <div className="w-full">
             <h2 className="font-semibold text-md mb-2">Assigned Events</h2>
             <ul className="list-disc pl-5 text-sm text-gray-700">
@@ -80,7 +80,7 @@ export default function ProfilePage() {
           </div>
           <button
             onClick={() => signOut()}
-            className="text-center bg-[maroon] text-white p-[5px] rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer mb-[10px] mt-[10px]"
+            className="text-center bg-[maroon] text-white p-[5px] rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer mb-[10px] mt-[20px]"
           >
             Sign Out
           </button>
