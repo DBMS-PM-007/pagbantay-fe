@@ -122,7 +122,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-        <div className="relative w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px] overflow-y-auto">
+        <div className="relative w-[350px] pt-[100px] pb-[100px] flex flex-col flex-start gap-[20px] overflow-y-auto">
           {loading ? (
             <div className="flex justify-center items-center h-40">
               <span className="text-gray-600">Loading Dashboard...</span>

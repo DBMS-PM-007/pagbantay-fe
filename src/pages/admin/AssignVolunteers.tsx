@@ -71,7 +71,7 @@ export default function AssignVolunteers() {
 
   return (
     <div className="w-screen h-screen text-center items-center flex flex-col bg-white text-black">
-      <div className="w-[350px] pt-[85px] pb-[100px] flex flex-col flex-start gap-[20px]">
+      <div className="w-[350px] pt-[100px] pb-[100px] flex flex-col flex-start gap-[20px]">
         <div className="relative w-full max-w-md mx-auto">
           <Input
             className="h-[50px] rounded-[100px] border-black pl-[40px] pr-[20px]"
