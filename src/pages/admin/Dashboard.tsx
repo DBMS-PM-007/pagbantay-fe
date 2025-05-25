@@ -39,7 +39,7 @@ export default function Dashboard() {
         headers: {
           "Content-Type": "application/json",
         },
-        timeout: 10000, 
+        timeout: 10000,
       })
 
       if (volunteersResponse.data) {
@@ -53,9 +53,9 @@ export default function Dashboard() {
           "Cache-Control": "no-cache",
           Pragma: "no-cache",
         },
-        timeout: 10000, 
+        timeout: 10000,
         params: {
-          _t: new Date().getTime(), 
+          _t: new Date().getTime(),
         },
       })
 
@@ -65,8 +65,8 @@ export default function Dashboard() {
         const processedEvents = eventsResponse.data.map((event: Event) => ({
           ...event,
           event_name: event.name || event.event_name || "Unnamed Event",
-          status: event.status || "upcoming", 
-          date: event.date || new Date().toISOString().split("T")[0], 
+          status: event.status || "upcoming",
+          date: event.date || new Date().toISOString().split("T")[0],
           location: event.location || "Location not specified",
           description: event.description || "No description available",
         }))
@@ -86,7 +86,7 @@ export default function Dashboard() {
           if (testingEvent.date) {
             const eventDate = new Date(testingEvent.date)
             const today = new Date()
-            today.setHours(0, 0, 0, 0) 
+            today.setHours(0, 0, 0, 0)
 
             const timeDiff = eventDate.getTime() - today.getTime()
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
@@ -102,7 +102,7 @@ export default function Dashboard() {
           if (nextEvent.date) {
             const eventDate = new Date(nextEvent.date)
             const today = new Date()
-            today.setHours(0, 0, 0, 0) 
+            today.setHours(0, 0, 0, 0)
 
             const timeDiff = eventDate.getTime() - today.getTime()
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
@@ -188,7 +188,7 @@ export default function Dashboard() {
                           e.stopPropagation()
                           navigate("/admin/events")
                         }}
-                        className="text-xl"
+                        className="text-xl hover:cursor-pointer"
                       >
                         <ChevronRight />
                       </button>
