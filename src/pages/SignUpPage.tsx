@@ -3,6 +3,7 @@ import { useSignUp } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "@components/InputField"
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function SignUpPage() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -12,7 +13,6 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL
 
@@ -33,11 +33,26 @@ export default function SignUpPage() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
+
+    const phoneRegex = /^\+?[0-9]{10,}$/;
+    let hasError = false;
+
+    if (!phoneRegex.test(contact)) {
+      toast.error("Please enter a valid phone number");
+      hasError = true;
+    }
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     try {
       if (!signUp) throw new Error("Sign-up instance not ready");
 
+      toast("Creating user...")
       await signUp.create({
         emailAddress: email,
         password: password,
@@ -79,14 +94,14 @@ export default function SignUpPage() {
         await registerVolunteer(volunteerData);
       } catch (apiErr: any) {
         console.error("API registration failed:", apiErr);
-        setError("Failed to register user to the system. Please try again.");
         return;
       }
 
+      toast.success("Successfully registered user!")
       setSubmitted(true);
     } catch (err: any) {
       console.error("Sign-up error:", err);
-      setError(err.message || "Something went wrong");
+      toast.error("Failed to register user. Please try again!");
     }
   };
 
@@ -155,7 +170,6 @@ export default function SignUpPage() {
       ) : (
         <Navigate to="./volunteer" />
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
