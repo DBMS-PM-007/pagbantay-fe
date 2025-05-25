@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar, MapPin, ClipboardList, Save, Loader } from 'lucide-react';
 import axios from "axios";
+import { toast } from "react-toastify";
 
 interface Event {
   event_id: string;
@@ -85,6 +86,7 @@ export default function EditEvent() {
       console.log("Update response:", response.data);
 
       setSuccessMessage("Event updated successfully!");
+      toast.success("Event updated successfully!");
 
       setTimeout(() => {
         navigate("/admin/events");
@@ -93,6 +95,7 @@ export default function EditEvent() {
       console.error("Error updating event:", err);
       const message = err.response?.data?.detail || "Failed to update event";
       setError(message);
+      toast.error("Error updating event!")
     } finally {
       setSaving(false);
     }
