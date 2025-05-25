@@ -42,7 +42,7 @@ export default function CreateEvent() {
         location,
         description,
       });
-      toast("Event created!");
+      toast.success("Event created!");
       navigate("/admin");
 
     } catch (err) {
