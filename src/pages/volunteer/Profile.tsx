@@ -56,7 +56,7 @@ export default function ProfilePage() {
           <img
             src={user.imageUrl}
             alt="Profile"
-            className="w-16 h-16 rounded-full"
+            className="w-6 h-6 rounded-full"
           />
           <p className="font-semibold text-lg">{user.fullName}</p>
           <p className="text-white text-sm">{user.primaryEmailAddress?.emailAddress}</p>
