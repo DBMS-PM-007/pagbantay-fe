@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -13,8 +13,44 @@ export default function CreateEvent() {
   const [endTime, setEndTime] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const [adminId, setAdminId] = useState("");
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchAdminId = async () => {
+      const email = user?.primaryEmailAddress?.emailAddress;
+      if (!email) return;
+
+      try {
+        const userRes = await axios.get(`${API_URL}/users/email/${email}`);
+        const userId = userRes.data?.user_id;
+
+        if (!userId) {
+          toast.error("User ID not found");
+          return;
+        }
+
+        const adminRes = await axios.get(`${API_URL}/admin`);
+        const admins = adminRes.data;
+
+        const matchedAdmin = admins.find(
+          (admin: any) => admin.user_id === userId
+        );
+
+        if (matchedAdmin) {
+          setAdminId(matchedAdmin.admin_id);
+        } else {
+          toast.error("Admin not found for this user.");
+        }
+      } catch (err) {
+        console.error("Failed to fetch user/admin:", err);
+        toast.error("Error fetching user/admin info");
+      }
+    };
+
+    fetchAdminId();
+  }, [user]);
 
   // For Start and End time conversion to match Backend
   function toISOString(date: string, time: string): string {
@@ -34,7 +70,7 @@ export default function CreateEvent() {
 
     try {
       await axios.post(`${API_URL}/events`, {
-        admin_id: "1",
+        admin_id: adminId,
         event_name: eventName,
         date: eventDate,
         start_time: toISOString(eventDate, startTime),
