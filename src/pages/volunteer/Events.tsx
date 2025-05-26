@@ -111,7 +111,7 @@ export default function Events() {
                 <div className="bg-[maroon] text-white pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
                   <h2 className="text-lg font-bold">{event.event_name}</h2>
                 </div>
-                <div className="p-4 space-y-3">
+                <div className="p-4 space-y-3 text-left">
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-black text-xs" />
                     <span className="text-black text-xs font-semibold">{event.location}</span>
