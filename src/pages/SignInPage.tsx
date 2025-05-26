@@ -37,7 +37,7 @@ export default function SignInPage() {
       }
     } catch (err: any) {
       console.error("Sign-in error:", err);
-      toast.error("Invalid Email or Password");
+      toast.error("Incorrect Email or Password");
     }
   };
 

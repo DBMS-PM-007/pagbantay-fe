@@ -176,7 +176,7 @@ export default function Dashboard() {
                       <ClipboardList className="w-4 h-4 flex-shrink-0 mt-1" />
                       <span className="break-words">{upcomingEvent.description}</span>
                     </p>
-                    <div className="flex items-center justify-between gap-4 border-t pt-2">
+                    <div className="flex items-center justify-between gap-4 border-t pt-2 pb-5">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 flex-shrink-0" />
                         <span>
