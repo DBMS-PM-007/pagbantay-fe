@@ -101,53 +101,58 @@ export default function Events() {
   return (
     <div className="w-screen h-screen text-center flex-start items-center flex flex-col bg-white text-black text-xs">
       <div className="w-[350px] pt-[100px] pb-[100px] flex flex-col flex-start gap-[20px]">
-        {isLoading ? <Loader text="Events" /> :
-          error ? <p className="text-red-600">{error}</p> :
-            events.map((event) => (
-              <div
-                key={event.event_id}
-                className="w-full bg-white rounded-lg shadow-md border border-black overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]"
-              >
-                <div className="bg-[maroon] text-white pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
-                  <h2 className="text-lg font-bold">{event.event_name}</h2>
+        {isLoading ? (
+          <Loader text="Events" />
+        ) : error ? (
+          <p className="text-red-600">{error}</p>
+        ) : events.length === 0 ? (
+          <p className="text-gray-600 italic">No events found.</p>
+        ) : (
+          events.map((event) => (
+            <div
+              key={event.event_id}
+              className="w-full bg-white rounded-lg shadow-md border border-black overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.01]"
+            >
+              <div className="bg-[maroon] text-white pl-[15px] pr-[15px] pt-[10px] pb-[5px]">
+                <h2 className="text-lg font-bold">{event.event_name}</h2>
+              </div>
+              <div className="p-4 space-y-3 text-left">
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-5 w-5 text-black text-xs" />
+                  <span className="text-black text-xs font-semibold">{event.location}</span>
                 </div>
-                <div className="p-4 space-y-3 text-left">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-black text-xs" />
-                    <span className="text-black text-xs font-semibold">{event.location}</span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-black text-xs" />
-                    <span className="text-black text-xs font-semibold">
-                      {formatEventDate(event.date)}
-                    </span>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <FileText className="h-5 w-5 text-black text-xs" />
-                    <span className="text-black text-xs font-semibold">
-                      {event.description}
-                    </span>
-                  </div>
-                  <div className="flex w-full">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="ml-auto bg-[maroon] text-white px-4 py-2 rounded border border-black font-semibold hover:cursor-pointer">
-                          {selectedStatus[event.event_id] || "Mark Availability"}
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-48">
-                        <DropdownMenuItem onClick={() => handleAvailabilityChange(event.event_id, "AVAILABLE")}>
-                          Available
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleAvailabilityChange(event.event_id, "UNAVAILABLE")}>
-                          Unavailable
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
+                <div className="flex items-start gap-3">
+                  <Clock className="h-5 w-5 text-black text-xs" />
+                  <span className="text-black text-xs font-semibold">
+                    {formatEventDate(event.date)}
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <FileText className="h-5 w-5 text-black text-xs" />
+                  <span className="text-black text-xs font-semibold">
+                    {event.description}
+                  </span>
+                </div>
+                <div className="flex w-full">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="ml-auto bg-[maroon] text-white px-4 py-2 rounded border border-black font-semibold hover:cursor-pointer">
+                        {selectedStatus[event.event_id] || "Mark Availability"}
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-48">
+                      <DropdownMenuItem onClick={() => handleAvailabilityChange(event.event_id, "AVAILABLE")}>
+                        Available
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleAvailabilityChange(event.event_id, "UNAVAILABLE")}>
+                        Unavailable
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
-            ))}
+            </div>
+          )))}
       </div>
     </div>
   )
