@@ -2,10 +2,24 @@ import { useUser, useClerk } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+type Assignment = {
+  assignment_id: string;
+  event: {
+    event_id: string;
+    event_name: string;
+    date: string;
+  };
+};
+
+type Availability = {
+  event_id: string;
+  availability: "AVAILABLE" | "UNAVAILABLE";
+};
+
 type VolunteerData = {
   user_id: string;
-  assignedStations: string[];
-  availability: string[];
+  assignments: Assignment[];
+  availability: Availability[];
 };
 
 export default function ProfilePage() {
@@ -40,7 +54,7 @@ export default function ProfilePage() {
     volunteerData?.assignments.filter((assignment) =>
       volunteerData.availability.some(
         (a) =>
-          a.event_id === assignment.event_id &&
+          a.event_id === assignment.event.event_id &&
           a.availability === "AVAILABLE"
       )
     ) || [];
@@ -64,8 +78,8 @@ export default function ProfilePage() {
         <div className="flex flex-col items-right pl-[15px] pr-[15px] pt-[30px] pb-[20px]">
           <div className="w-full">
             <h2 className="font-semibold text-md mb-2">Assigned Events</h2>
-            <ul className="list-disc pl-5 text-sm text-gray-700">
-              {filteredAssignments.length ? (
+            {
+              filteredAssignments.length ? (
                 <ul className="list-disc pl-5 text-sm text-gray-700">
                   {filteredAssignments.map(({ assignment_id, event }) => (
                     <li key={assignment_id}>
@@ -75,17 +89,18 @@ export default function ProfilePage() {
                 </ul>
               ) : (
                 <p>No assigned events yet.</p>
-              )}
-            </ul>
-          </div>
+              )
+            }
+          </div >
           <button
             onClick={() => signOut()}
             className="text-center bg-[maroon] text-white p-[5px] rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer mb-[10px] mt-[20px]"
           >
             Sign Out
           </button>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 }
+
