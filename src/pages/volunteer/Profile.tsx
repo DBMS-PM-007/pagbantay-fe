@@ -78,27 +78,29 @@ export default function ProfilePage() {
         <div className="flex flex-col items-right pl-[15px] pr-[15px] pt-[30px] pb-[20px]">
           <div className="w-full">
             <h2 className="font-semibold text-md mb-2">Assigned Events</h2>
-            {filteredAssignments.length ? (
-              <ul className="list-disc pl-5 text-sm text-gray-700">
-                {filteredAssignments.map(({ assignment_id, event }) => (
-                  <li key={assignment_id}>
-                    {event.event_name} — {new Date(event.date).toLocaleDateString()}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No assigned events yet.</p>
-            )}
-          </div>
+            {
+              filteredAssignments.length ? (
+                <ul className="list-disc pl-5 text-sm text-gray-700">
+                  {filteredAssignments.map(({ assignment_id, event }) => (
+                    <li key={assignment_id}>
+                      {event.event_name} — {new Date(event.date).toLocaleDateString()}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No assigned events yet.</p>
+              )
+            }
+          </div >
           <button
             onClick={() => signOut()}
             className="text-center bg-[maroon] text-white p-[5px] rounded-md shadow hover:bg-[maroon]/90 transition cursor-pointer mb-[10px] mt-[20px]"
           >
             Sign Out
           </button>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 }
 
