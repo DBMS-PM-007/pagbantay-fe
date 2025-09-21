@@ -22,7 +22,7 @@ import RedirectTrailingSlash from "@components/RedirectTrailingSlash"
 export default function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <RedirectTrailingSlash />
         <Routes>
           <Route element={<RequireAuth />}>
